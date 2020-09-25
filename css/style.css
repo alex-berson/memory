@@ -1,3 +1,4 @@
+@import url("flip.css");
 @font-face {
     font-family: 'Liberation';
     src: url(../fonts/LiberationSerif-Regular-webfont.woff);
@@ -19,7 +20,7 @@
     --lightGray: #e8e8e8;
     --boardSize: 95vmin;
     --minSide: 4;
-    --maxSide: 5;
+    --maxSide: 6;
 }
 
 body{
@@ -40,7 +41,7 @@ h1{
     margin-top: -20px;
     margin-bottom: 20px;
 
-    /* display: none; */
+    display: none;
     
     line-height: 1;
 }
@@ -104,14 +105,22 @@ h1{
     /* vertical-align: top; */
     /* align-items: stretch; */
     /* justify-content: space-between; */
+
+    /* width: 86px;
+    height: 86px; */
+
+    width: calc(var(--boardSize) / 4 - 4px);
+    height: calc(var(--boardSize) / 4 - 4px);
 }
 
 img{
     width: 100%;
-    /* max-height: 61%; */
+    max-height: 100%;
     /* border-radius: 7px 7px 0 0; */
     border-radius: 6px;
+
 }
+
 
 .country{
     /* vertical-align: center; */
@@ -139,6 +148,10 @@ p{
     transform: translate(0, -50%) */
 }
 
+.front .tile{
+    background: cadetblue;
+}
+
 @media (orientation: landscape) and (max-height: 460px){
     h1{
         display: none;
@@ -147,7 +160,9 @@ p{
         
         grid-template-columns: repeat(var(--maxSide), minmax(calc(100% / var(--maxSide)), 1fr));
         height: var(--boardSize);
-        width: calc(var(--boardSize) * 1.25);
+        width: calc(var(--boardSize) * var(--maxSide) / var(--minSide));
+        /* width: calc(var(--boardSize) * 1.5); */
+
 
     }
 }

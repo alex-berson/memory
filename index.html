@@ -9,6 +9,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="google" content="notranslate"> 
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Memory">
+    <meta name="theme-color" content="#5f9ea0">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5f9ea0">   
+    <meta name="msapplication-TileColor" content="#5f9ea0">
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="js/memory.js"></script>
 </head>
@@ -23,7 +35,7 @@
             <div id="tile1" class="tile">
                 <img src="/images/Webp.net-resizeimage.png" alt="">
                 <div class="country">
-                    <p>Берег слоновой кости</p>
+                    <p>Антигуа и Барбуда</p>
                 </div>
             </div>
             <div id="tile2" class="tile">
@@ -32,12 +44,26 @@
                     <p>Антигуа и Барбуда</p>
                 </div>
             </div>
-            <div id="tile3" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Гвинея-Бисау</p>
+
+            <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+                <div class="flipper">
+                    <div class="front">
+                        <div id="tile3" class="tile">
+                            <!-- <img src="/images/at.png" alt=""> -->
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div id="tile3" class="tile">
+                            <img src="/images/Webp.net-resizeimage.png" alt="">
+                            <div class="country">
+                                <p>Антигуа и Барбуда</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
             <div id="tile4" class="tile">
                 <img src="/images/Webp.net-resizeimage.png" alt="">
                 <div class="country">
@@ -135,6 +161,30 @@
                 </div>
             </div>
             <div id="tile20" class="tile">
+                <img src="/images/Webp.net-resizeimage.png" alt="">
+                <div class="country">
+                    <p>Берег слоновой кости</p>
+                </div>
+            </div>
+            <div id="tile21" class="tile">
+                <img src="/images/Webp.net-resizeimage.png" alt="">
+                <div class="country">
+                    <p>Берег слоновой кости</p>
+                </div>
+            </div>
+            <div id="tile22" class="tile">
+                <img src="/images/Webp.net-resizeimage.png" alt="">
+                <div class="country">
+                    <p>Берег слоновой кости</p>
+                </div>
+            </div>
+            <div id="tile23" class="tile">
+                <img src="/images/Webp.net-resizeimage.png" alt="">
+                <div class="country">
+                    <p>Берег слоновой кости</p>
+                </div>
+            </div>
+            <div id="tile24" class="tile">
                 <img src="/images/Webp.net-resizeimage.png" alt="">
                 <div class="country">
                     <p>Берег слоновой кости</p>

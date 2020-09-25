@@ -11,6 +11,7 @@ if (window.innerHeight > window.innerWidth) {
 }
 console.log(parseInt(getComputedStyle(document.documentElement).getPropertyValue('--boardSize').replace(/[^0-9]/g,''))/100);
 
+console.log(navigator.language);
 
 window.onload = function() {
     document.fonts.ready.then(function() {
