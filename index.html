@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Memory Game Online</title>
     <meta name="description" content=" ">
-    <meta name="keywords" content="memory, puzzle, flags, game, tiles, online, play">
+    <meta name="keywords" content="memory, puzzle, flags, game, cards, online, play">
     <meta name="author" content="Alexander Berson">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -19,9 +19,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="shortcut icon" href="images/favicon.ico">
     <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5f9ea0">   
-    <meta name="msapplication-TileColor" content="#5f9ea0">
+    <meta name="msapplication-cardColor" content="#5f9ea0">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="js/countries.json"></script>
     <script src="js/memory.js"></script>
 </head>
 <body class="noselect">
@@ -32,185 +33,483 @@
     </header>
     <main>
         <div class="board">
-            <div id="tile1" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country" id="country1">
-                    <p>Антигуа и Барбуда</p>
-                </div>
-            </div>
-            <div id="tile2" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country" id="country2">
-                    <p>Антигуа и Барбуда</p>
-                </div>
-            </div>
-
-            <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flip-container">
                 <div class="flipper">
-                    <div class="front">
-                        <div id="tile3" class="tile">
-                            <!-- <img src="/images/at.png" alt=""> -->
+                    <div class="back">
+                        <div class="card">
                         </div>
                     </div>
-                    <div class="back">
-                        <div id="tile3" class="tile">
-                            <img src="/images/Webp.net-resizeimage.png" alt="">
+                    <div class="front">
+                        <div id="card1" class="card">
+                            <img src="" alt="">
                             <div class="country">
-                                <p>Антигуа и Барбуда</p>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card2" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card3" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="tile4" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Андора</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card4" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile5" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Великобритания</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card5" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile6" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Маршалловы Острова</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card6" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile7" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Папуа — Новая Гвинея</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card7" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile8" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Сент-Винсент и Гренадины</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card8" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile9" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Экваториальная Гвинея</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card9" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile10" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Соломоновы Острова</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card10" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile11" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Тринидад и Тобаго</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card11" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile12" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Саудовская Аравия</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card12" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card13" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile13" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Босния и Герцеговина</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card14" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile14" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card15" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card16" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile15" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card17" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile16" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card18" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile17" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card19" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile18" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card20" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile19" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div id="card21" class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div id="card21" class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card21" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile20" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div id="card22" class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div id="card22" class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card22" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile21" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div id="card23" class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div id="card23" class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card23" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile22" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div id="card24" class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div id="card24" class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card24" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile23" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div id="card25" class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div id="card25" class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card25" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile24" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div id="card26" class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div id="card26" class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card26" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile25" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div id="card27" class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div id="card27" class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card27" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile26" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div id="card28" class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div id="card28" class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card28" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile27" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div id="card29" class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div id="card29" class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card29" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="tile28" class="tile">
-                <img src="/images/Webp.net-resizeimage.png" alt="">
-                <div class="country">
-                    <p>Берег слоновой кости</p>
+            <div id="card30" class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div id="card30" class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div id="card30" class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

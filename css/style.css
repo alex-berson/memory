@@ -19,15 +19,15 @@
     --blue: #0038b8;
     --lightGray: #e8e8e8;
     --boardSize: 95vmin;
-    --minSide: 4;
-    --maxSide: 7;
+    --minSide: 5;
+    --maxSide: 6;
 }
 
 body{
     font-family: 'Liberation', serif;
     margin: 0px;
-    opacity: 1;
-
+    opacity: 0;
+    background: ghostwhite;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -68,7 +68,7 @@ h1{
 .board{
     display: grid;
     grid-template-columns: repeat(var(--minSide), minmax(calc(100% / var(--maxSide)), 1fr));
-    /* grid-template-columns: repeat(4, minmax(20%, 1fr)); */
+    /* grid-template-columns: repeat(5, minmax(20%, 1fr)); */
     
     /* border: 1px solid #000000; */
 
@@ -76,6 +76,7 @@ h1{
     width: var(--boardSize);
     height: calc( var(--boardSize) * var(--maxSide) / var(--minSide));
     /* height: calc( var(--boardSize) * 1.25); */
+    /* height: var(--boardSize); */
 
     margin: auto;
 
@@ -83,8 +84,10 @@ h1{
     /* justify-content: auto; */
     /* align-content: bottom; */
 }
-
-.tile{
+.flipper{
+    /* visibility: hidden; */
+}
+.card{
 
     border: 1px solid #000000;
 
@@ -96,6 +99,7 @@ h1{
     /* background: var(--lightGray); */
     padding: 0;
     font-size: 3.2vmin;
+    /* font-size: 3.0vmin; */
     line-height: 0.9;
     text-align: center;
     /* vertical-align: center; */
@@ -106,17 +110,18 @@ h1{
     /* align-items: stretch; */
     /* justify-content: space-between; */
 
-    /* width: 86px;
-    height: 86px; */
-
-    width: calc(var(--boardSize) / 4 - 4px);
-    height: calc(var(--boardSize) / 4 - 4px);
+    width: calc(var(--boardSize) / var(--minSide) - 4px);
+    height: calc(var(--boardSize) / var(--minSide) - 4px);
 }
 
 img{
-    width: 100%;
-    max-height: 100%;
-    /* border-radius: 7px 7px 0 0; */
+    /* width: 100%;
+    max-height: 100%; */
+
+    width: calc(var(--boardSize) / var(--minSide) - 4px);
+    height: calc((var(--boardSize) / var(--minSide) - 4px) * 2 / 3);
+
+    /* border-bottom: 1px solid #000000; */
     border-radius: 6px;
 
 }
@@ -148,11 +153,11 @@ p{
     transform: translate(0, -50%) */
 }
 
-.front .tile{
+.back .card{
     background: cadetblue;
 }
 
-@media (orientation: landscape) and (max-height: 460px){
+@media (orientation: landscape){
     h1{
         display: none;
     }
@@ -162,12 +167,17 @@ p{
         height: var(--boardSize);
         width: calc(var(--boardSize) * var(--maxSide) / var(--minSide));
         /* width: calc(var(--boardSize) * 1.5); */
-
-
     }
 }
 
-.tile:hover{
+@media (min-width: 460px) and (min-height: 460px){
+    .card{
+        font-size: 2.5vmin;
+        margin: 2px;
+    }
+}
+
+.card:hover{
       cursor: pointer;
 }
 
