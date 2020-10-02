@@ -18,16 +18,19 @@
     --lightBlue: #75aadb;
     --blue: #0038b8;
     --lightGray: #e8e8e8;
-    --boardSize: 95vmin;
+    /* --boardSize: 96vmin; */
+    --boardSize: 0.92;
     --minSide: 5;
     --maxSide: 6;
+    --gapSize: 2px;
+    --backColor: cadetblue;
 }
 
 body{
     font-family: 'Liberation', serif;
     margin: 0px;
     opacity: 0;
-    background: ghostwhite;
+    background: whitesmoke;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -67,59 +70,66 @@ h1{
 
 .board{
     display: grid;
-    grid-template-columns: repeat(var(--minSide), minmax(calc(100% / var(--maxSide)), 1fr));
-    /* grid-template-columns: repeat(5, minmax(20%, 1fr)); */
+    /* grid-template-columns: repeat(var(--minSide), minmax(calc(100% / var(--maxSide)), 1fr)); */
+    grid-template-columns: repeat(var(--minSide), 1fr);
     
     /* border: 1px solid #000000; */
 
-    padding: 1px;
-    width: var(--boardSize);
-    height: calc( var(--boardSize) * var(--maxSide) / var(--minSide));
+    /* padding: 1px; */
+    /* width: calc(var(--boardSize);
+    height: calc(var(--boardSize) * var(--maxSide) / var(--minSide); */
+    width: calc(var(--boardSize) + (var(--minSide) - 1) * var(--gapSize));
+    height: calc(var(--boardSize) * var(--maxSide) / var(--minSide) + (var(--maxSide) - 1) * var(--gapSize));
     /* height: calc( var(--boardSize) * 1.25); */
     /* height: var(--boardSize); */
 
     margin: auto;
 
+    gap: 2px;
 
     /* justify-content: auto; */
     /* align-content: bottom; */
 }
+
 .flipper{
     /* visibility: hidden; */
 }
+
 .card{
 
-    border: 1px solid #000000;
+    /* border: inset 1px solid #000000; */
 
     font-weight: 400;
 
     display: flex;
     flex-direction: column;
 
-    /* background: var(--lightGray); */
+    background: snow;
     padding: 0;
     font-size: 3.2vmin;
     /* font-size: 3.0vmin; */
     line-height: 0.9;
     text-align: center;
     /* vertical-align: center; */
-    margin: 1px;
+
+    /* margin: 1px; */
+
     border-radius: 7px;
     position: relative;
     /* vertical-align: top; */
     /* align-items: stretch; */
     /* justify-content: space-between; */
 
-    width: calc(var(--boardSize) / var(--minSide) - 4px);
-    height: calc(var(--boardSize) / var(--minSide) - 4px);
+    width: calc(var(--boardSize) / var(--minSide));
+    height: calc(var(--boardSize) / var(--minSide));
 }
 
 img{
     /* width: 100%;
     max-height: 100%; */
 
-    width: calc(var(--boardSize) / var(--minSide) - 4px);
-    height: calc((var(--boardSize) / var(--minSide) - 4px) * 2 / 3);
+    width: calc(var(--boardSize) / var(--minSide));
+    height: calc((var(--boardSize) / var(--minSide)) * 2 / 3);
 
     /* border-bottom: 1px solid #000000; */
     border-radius: 6px;
@@ -154,7 +164,7 @@ p{
 }
 
 .back .card{
-    background: cadetblue;
+    background: var(--backColor);
 }
 
 @media (orientation: landscape){
@@ -163,17 +173,28 @@ p{
     }
     .board{
         
-        grid-template-columns: repeat(var(--maxSide), minmax(calc(100% / var(--maxSide)), 1fr));
-        height: var(--boardSize);
-        width: calc(var(--boardSize) * var(--maxSide) / var(--minSide));
-        /* width: calc(var(--boardSize) * 1.5); */
+        /* grid-template-columns: repeat(var(--maxSide), minmax(calc(100% / var(--maxSide)), 1fr)); */
+
+        grid-template-columns: repeat(var(--maxSide), 1fr);
+
+        height: calc(var(--boardSize) + (var(--minSide) - 1) * var(--gapSize));
+
+        /* height: calc(var(--boardSize)); */
+
+        /* width: calc(var(--boardSize) * var(--maxSide) / var(--minSide)); */
+
+        width: calc(var(--boardSize) * var(--maxSide) / var(--minSide) + (var(--maxSide) - 1) * var(--gapSize) - 0px);
+        /* gap: 2px; */
+        /* width: calc(var(--boardSize) * 1.2); */
+
+    
     }
 }
 
 @media (min-width: 460px) and (min-height: 460px){
     .card{
         font-size: 2.5vmin;
-        margin: 2px;
+        /* margin: 2px; */
     }
 }
 
