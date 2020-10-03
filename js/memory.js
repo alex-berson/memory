@@ -4,6 +4,7 @@ let numberOfCards = 30;
 let numberOfTurnedCards = 0;
 const boardSize = 0.92;
 let autoTurn;
+let winPairs = 0;
 let turnedCards = [];
 // let backColor = ["CadetBlue", "BurlyWood", "SteelBlue", "DarkSeaGreen", "Salmon", "Olive", "DarkKhaki"];
 const backColor = [
@@ -31,7 +32,9 @@ const backColor = [
 
 const shuffleCodes = (codes) => {
     
-    return codes.concat(codes).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
+    // return codes.concat(codes).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
+    return codes.concat(codes);
+
              
 }
 
@@ -52,7 +55,7 @@ const flipCard = (e) => {
     if (numberOfTurnedCards == 2){
         clearTimeout(autoTurn);
         numberOfTurnedCards = 0;
-            document.querySelectorAll(`#${turnedCards[0].id},#${turnedCards[1].id}`).forEach(function(card){
+            document.querySelectorAll(`#${turnedCards[0].id},#${turnedCards[1].id}`).forEach((card) => {
                 card.classList.toggle("flip");
             });
     }
@@ -83,16 +86,32 @@ const flipCard = (e) => {
         if (turnedCards[0].querySelector("p").innerHTML == turnedCards[1].querySelector("p").innerHTML){
             numberOfTurnedCards = 0;
             console.log("Match!");
-            document.querySelectorAll(`#${turnedCards[0].id}, #${turnedCards[1].id}`).forEach(function(card){
+            document.querySelectorAll(`#${turnedCards[0].id}, #${turnedCards[1].id}`).forEach((card) => {
                 if (matchMedia('(hover: none)').matches){
                     card.removeEventListener("touchstart", flipCard);
                 } else {
                     card.removeEventListener("click", flipCard);
                 }
-                    
+                card.style.transition = 'opacity 3s linear';
+                card.style.opacity = 0;
             });
+            winPairs++;
+            console.log("winPairs " + winPairs);
+            if (winPairs == numberOfCards/2) {
+                setTimeout(() => {
+                    // document.querySelector("body").style.transition = '';
+                    // document.querySelector("body").style.opacity = 0;
+                    document.querySelectorAll(".flip-container").forEach((card) => {
+                        card.classList.toggle("flip");
+                        // card.removeAttribute("style");
+                        card.style.transition = "";
+
+                     });
+                    setTimeout(init, 600);
+                }, 3000);
+            }
         } else {
-            autoTurn  = setTimeout(function() {document.querySelectorAll(`#${turnedCards[0].id},#${turnedCards[1].id}`).forEach(function(card){
+            autoTurn  = setTimeout(() => {document.querySelectorAll(`#${turnedCards[0].id},#${turnedCards[1].id}`).forEach((card) => {
                 card.classList.toggle("flip"); });
                 numberOfTurnedCards = 0;}, 700);
         }
@@ -101,15 +120,15 @@ const flipCard = (e) => {
 }
 
 const setEventListeners = () => {
-    document.querySelectorAll('.flip-container').forEach(function(card){
-        if (firstInitialization) {
+    document.querySelectorAll('.flip-container').forEach((card) => {
+        // if (firstInitialization) {
             if (matchMedia('(hover: none)').matches){
 
                 card.addEventListener("touchstart", flipCard);
             } else {
                 card.addEventListener("click", flipCard);
             }
-        }
+        // }
     });
     window.addEventListener("resize", setTheBoard);
 
@@ -182,6 +201,7 @@ const setTheBoard = () => {
 }
 
 const getDataFromJSON = () => {
+    let data;
     console.log(navigator.language.slice(0, 2));
 
     switch(navigator.language.slice(0, 2)){
@@ -239,7 +259,7 @@ const setCards = (countries, codes) => {
     //     i++;
     // });
 
-    document.querySelectorAll('.card img').forEach(function(image){
+    document.querySelectorAll('.card img').forEach((image) => {
         if (i < numberOfCards) {
             name  = countries.find(x => x.code === codes[i]).name;
             image.src = `/images/flags/${codes[i]}.png`;
@@ -287,7 +307,7 @@ const localStorageCodes = (countries) => {
         // randomizedCodes = codes.concat(countries.map(a => a.code).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]));
         do{
             randomizedCodes = countries.map(a => a.code).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
-        } while(randomizedCodes.slice(0, codes.length).some(r=> codes.includes(r)));
+        } while(randomizedCodes.slice(0, codes.length).some(r => codes.includes(r)));
 
         randomizedCodes = codes.concat(randomizedCodes);
         localStorage.codes = JSON.stringify(randomizedCodes);
@@ -318,11 +338,14 @@ const localStorageCodes = (countries) => {
 
 const init = () => {
 
-    let data;
+    console.log("init");
+
+    // let data;
+    winPairs = 0;
 
     setEventListeners();
 
-    firstInitialization = false;    
+    // firstInitialization = false;    
 
     setNumberOfCards();
 
@@ -353,7 +376,22 @@ const init = () => {
 
     // document.querySelector("#myCard").classList.toggle("flip")
 
-    document.querySelector("body").style.opacity = 1;
+    // document.querySelector("body").style.opacity = 1;
+
+    // document.querySelector("body").style.transition = 'opacity 2s linear';
+    // document.querySelector("body").style.opacity = 1;
+
+    let i = 0;
+    let delays = Array.from({length: numberOfCards}, (_, i) => i/7);
+    delays = delays.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
+    console.log(delays);
+    document.querySelectorAll(".flip-container").forEach((card) => {
+        card.style.transition = `opacity 0s linear ${delays[i]}s`;
+        card.style.opacity = 1;
+        i++;
+
+     });
+
     // setTimeout(function() {document.querySelector('#card1').classList.toggle("hover");
     // console.log("timeout");
     // }, 5000);
@@ -362,9 +400,9 @@ const init = () => {
 
 
 window.onload = function() {
-    document.fonts.ready.then(function() {
+    document.fonts.ready.then(() => {
 
-        init();
+        // init();
 
         // function preventDefault(e){
         //     e.preventDefault();
@@ -372,6 +410,10 @@ window.onload = function() {
         
         // document.body.addEventListener('touchmove', preventDefault, { passive: false });
         // document.querySelector("body").style.transition = 'opacity 2s ease';
+
+    
+        init();
+        // setTimeout(1000, init);
     });
     
 };

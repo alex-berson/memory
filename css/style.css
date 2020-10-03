@@ -11,13 +11,13 @@
 }
 
 :root {
-    --green: #008c45;
+    /* --green: #008c45;
     --yellow: #ffcc00;
     --orange: #ff883e;
     --red: #ef4135;
     --lightBlue: #75aadb;
     --blue: #0038b8;
-    --lightGray: #e8e8e8;
+    --lightGray: #e8e8e8; */
     /* --boardSize: 96vmin; */
     --boardSize: 0.92;
     --minSide: 5;
@@ -29,7 +29,7 @@
 body{
     font-family: 'Liberation', serif;
     margin: 0px;
-    opacity: 0;
+    /* opacity: 0; */
     background: whitesmoke;
     position: absolute;
     top: 50%;
@@ -49,7 +49,7 @@ h1{
     line-height: 1;
 }
 
-#char1{
+/* #char1{
     color: var(--blue);
 }
 #char2{
@@ -66,7 +66,7 @@ h1{
 }
 #char6{
     color: var(--orange);
-}
+} */
 
 .board{
     display: grid;
@@ -89,6 +89,9 @@ h1{
 
     /* justify-content: auto; */
     /* align-content: bottom; */
+}
+.flip-container{
+    opacity: 0;
 }
 
 .flipper{
@@ -200,6 +203,31 @@ p{
 
 .card:hover{
       cursor: pointer;
+}
+
+/* @keyframes scaling {
+    0% {
+        transform: scale(1.0);
+    }
+    50% {
+        transform: scale(3.5);
+    }
+    100% {
+        transform: scale(1.0);
+    }
+} */
+
+@keyframes disapearing {
+    to {
+        opacity: 0;
+    }
+}
+
+.zoom{
+    z-index: 100;
+    /* animation: scaling 3s linear forwards; */
+               /* coloring 0.5s 0.5s linear forwards; */
+    animation: disapearing 3s linear forwards;
 }
 
 .noselect {
