@@ -1,0 +1,1 @@
+let backColors = [ "CadetBlue", "BurlyWood", "DarkKhaki", "DarkSalmon", "DarkSeaGreen", "LightCoral", "LightSalmon", "LightSlateGray", "MediumSeaGreen", "Peru", "Plum", "RosyBrown", "Salmon", ];

@@ -1,24 +1,10 @@
+// import { codes2 } from 'codes.js';
+// import { backColors } from 'colors.js';
+
 const boardSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--boardSize'));
-let numberOfCards = 30;
-
-let countries;
-let codes;
-
-const backColor = [
-    "CadetBlue",
-    "BurlyWood",
-    "DarkKhaki",
-    "DarkSalmon",
-    "DarkSeaGreen",
-    "LightCoral",
-    "LightSalmon",
-    "LightSlateGray",
-    "MediumSeaGreen",
-    "Peru",
-    "Plum",
-    "RosyBrown",
-    "Salmon",
-  ];
+let numberOfCards;
+let countries = [];
+let codes = [];
 
 // const randomizedCards = (cards) => {
     
@@ -43,8 +29,6 @@ const firework = () => {
     let doubles = [];
     let bigCard;
 
-
-        
     console.log("WIN!!!")
     document.querySelectorAll(".flip-container").forEach((card) => {
         card.style.opacity = 0;
@@ -64,10 +48,14 @@ const firework = () => {
             clearInterval(zoomingInterval);
             console.log("Stop animation");
             setTimeout(() => {
-                document.querySelector('#big1').style.display = "none";
-                document.querySelector('#big2').style.display = "none";
-                document.querySelector('#big1').classList.remove("zoom");
-                document.querySelector('#big2').classList.remove("zoom");
+                document.querySelectorAll("#big1, #big2").forEach((card) => {
+                    card.style.display = "none";
+                    card.classList.remove("zoom");
+                });
+                // document.querySelector('#big1').style.display = "none";
+                // document.querySelector('#big2').style.display = "none";
+                // document.querySelector('#big1').classList.remove("zoom");
+                // document.querySelector('#big2').classList.remove("zoom");
                 init();}, 1000);
         } else {
 
@@ -85,8 +73,13 @@ const firework = () => {
             console.log("Zooming!")
             bigCard = document.querySelector(`#big${big12 + 1} img`);
             bigCard.src = `/images/flags/${codes[cardNumbers[i]]}.png`;
-            name  = countries.find(x => x.code === codes[cardNumbers[i]]).name;
+            name  = countries.find(x => x.code === codes[cardNumbers[i]].toUpperCase()).name;
+            // name  = countries.find(x => x.code === codes[cardNumbers[i]]).name;
+
+
+
             bigCard.nextElementSibling.querySelector('p').innerHTML = name;
+            // bigCard.nextElementSibling.querySelector('p').innerHTML = "Democratic Republic of the Congo";
             document.querySelector(`#big${big12 + 1}`).classList.add("zoom");
             doubles.push(codes[cardNumbers[i]]); 
             do {
@@ -101,9 +94,12 @@ const firework = () => {
 
 const flipCard = (e) => {
 
+    // alert("Language change");
+
     if( typeof flipCard.numberOfTurnedCards == 'undefined' ) {
         flipCard.numberOfTurnedCards = 0;
     }
+
     if( typeof flipCard.winPairs == 'undefined' ) {
         flipCard.winPairs = 0;
     }
@@ -112,8 +108,9 @@ const flipCard = (e) => {
         flipCard.turnedCards = [];
     }
 
-
-
+    // if( typeof flipCard.turnedCards == 'undefined' ) {
+    //     flipCard.guessedCards = [];
+    // }
 
     if (flipCard.numberOfTurnedCards == 1 && e.currentTarget.id == flipCard.turnedCards[0].id) {console.log("return"); return;}
 
@@ -146,11 +143,12 @@ const flipCard = (e) => {
                 card.style.transition = 'opacity 2s linear';
                 card.style.opacity = 0;
             });
+            // flipCard.guessedCards[flipCard.winPairs] = 
             flipCard.winPairs++;
             console.log("winPairs " + flipCard.winPairs);
             if (flipCard.winPairs == numberOfCards/2) {
                 flipCard.winPairs = 0;
-                localStorage.codes = JSON.stringify(JSON.parse(localStorage.codes).slice(numberOfCards/2));
+                // localStorage.codes = JSON.stringify(JSON.parse(localStorage.codes).slice(numberOfCards/2));
                 setTimeout(() => {firework();}, 2000);
 
             }
@@ -160,22 +158,18 @@ const flipCard = (e) => {
                 flipCard.numberOfTurnedCards = 0;}, 700);
         }
     }
-    // numberOfTurns++;
 }
 
 const setEventListeners = () => {
     document.querySelectorAll('.flip-container').forEach((card) => {
-        // if (firstInitialization) {
             if (matchMedia('(hover: none)').matches){
 
                 card.addEventListener("touchstart", flipCard);
             } else {
                 card.addEventListener("click", flipCard);
             }
-        // }
     });
     window.addEventListener("resize", setTheBoard);
-
 } 
 
 const setNumberOfCards = () => {
@@ -187,28 +181,39 @@ const setNumberOfCards = () => {
             numberOfCards = 24;
             document.documentElement.style.setProperty('--minSide', 4);
             document.documentElement.style.setProperty('--maxSide', 6);
-            document.querySelector("#card25").style.display = "none";
-            document.querySelector('#card26').style.display = "none";
-            document.querySelector('#card27').style.display = "none";
-            document.querySelector('#card28').style.display = "none";
-            document.querySelector('#card29').style.display = "none";
-            document.querySelector('#card30').style.display = "none";
+            document.querySelectorAll("#card25, #card26, #card27, #card28, #card29, #card30").forEach((card) => {
+                card.style.display = "none";
+            });
+
+            // document.querySelector("#card25").style.display = "none";
+            // document.querySelector('#card26').style.display = "none";
+            // document.querySelector('#card27').style.display = "none";
+            // document.querySelector('#card28').style.display = "none";
+            // document.querySelector('#card29').style.display = "none";
+            // document.querySelector('#card30').style.display = "none";
         } else {
             numberOfCards = 28;
             document.documentElement.style.setProperty('--minSide', 4);
             document.documentElement.style.setProperty('--maxSide', 7);
-            document.querySelector('#card29').style.display = "none";
-            document.querySelector('#card30').style.display = "none";
+            document.querySelectorAll("#card29, #card30").forEach((card) => {
+                card.style.display = "none";
+            });
+            // document.querySelector('#card29').style.display = "none";
+            // document.querySelector('#card30').style.display = "none";
         }
+    } else {
+         numberOfCards = 30;
     }
 }
 
 const setTheBoard = () => {
+    // const boardSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--boardSize'));
+
     // const boardSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--boardSize').replace(/[^0-9]/g,''))/100;
     const minSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--minSide'));
 
     // console.log(parseInt(getComputedStyle(document.documentElement).getPropertyValue('--boardSize').replace(/[^0-9]/g,''))/100);
-    console.log(parseInt(getComputedStyle(document.documentElement).getPropertyValue('--boardSize').replace(/[^0-9]/g,''))/100);
+    // console.log(parseInt(getComputedStyle(document.documentElement).getPropertyValue('--boardSize').replace(/[^0-9]/g,''))/100);
 
 
     // if (window.innerHeight > window.innerWidth) {
@@ -252,44 +257,70 @@ const getDataFromJSON = () => {
     console.log(navigator.language.slice(0, 2));
 
     switch(navigator.language.slice(0, 2)){
-        case "en": data = en; break;
+        case "en": data = en; break;        
         case "ru": data = ru; break;
         default: data = en; break;
     }
     // let data = list;
     return JSON.parse(data);
+    // return data;
 }
 
 const setBackColor = () => {
-    if (typeof(localStorage.color) == "undefined") {
-        localStorage.color = 0;
-    } else {
-        localStorage.color = parseInt(localStorage.color) + 1;
-    }
-    console.log(localStorage.color);
 
-    // localStorage.clear();
-    document.documentElement.style.setProperty('--backColor', backColor[parseInt(localStorage.color)]);
+
+    if (typeof(localStorage.colors) == "undefined") {
+        localStorage.colors = JSON.stringify(backColors);
+    } else {
+        backColors = JSON.parse(localStorage.colors);
+        backColors.push(backColors.shift());
+        localStorage.colors = JSON.stringify(backColors);
+    }
+    console.log(localStorage.colors);
+
+    document.documentElement.style.setProperty('--backColor', backColors[0]);
+
     // console.log(back[0]);
-    if (backColor.length == parseInt(localStorage.color) + 1) localStorage.removeItem("color");
+    // if (backColors.length == parseInt(localStorage.color) + 1) localStorage.removeItem("color");
+
+    // if (typeof(localStorage.color) == "undefined") {
+    //     localStorage.color = 0;
+    // } else {
+    //     localStorage.color = parseInt(localStorage.color) + 1;
+    // }
+    // console.log(localStorage.color);
+
+    // // localStorage.clear();
+    // document.documentElement.style.setProperty('--backColor', backColor[parseInt(localStorage.color)]);
+    // // console.log(back[0]);
+    // if (backColor.length == parseInt(localStorage.color) + 1) localStorage.removeItem("color");
 }
 
 const setCards = (codes) => {
 
-    let i = 0
+    // let i = 0
     let name;
 
     setBackColor();
 
-
-    document.querySelectorAll('.card img').forEach((image) => {
+    document.querySelectorAll('.card img').forEach((image, i) => {
         if (i < numberOfCards) {
-            name  = countries.find(x => x.code === codes[i]).name;
+
+            console.log("code", codes[i]);
+
+            name  = countries.find(x => x.code === codes[i].toUpperCase()).name;
+
+            //  name = "Democratic Republic of the Congo";
+
             image.src = `/images/flags/${codes[i]}.png`;
             image.nextElementSibling.querySelector('p').innerHTML = name;
+                // image.nextElementSibling.querySelector('p').innerHTML = "Democratic Republic of the Congo";
+                // image.nextElementSibling.querySelector('p').innerHTML = "Объединенные арабские эмираты";
+                
             
             // console.log((cards[i].ru).split(" ").length);
-            if ((name).split(" ").length > 2 && (name).length > 24){
+            if ((name).split(/-| /).length > 2 && (name).length > 24){
+                // image.nextElementSibling.querySelector('p').style.lineHeight = 0.9;
                 if(screen.width > 460 && screen.height > 460){
                     image.nextElementSibling.querySelector('p').style.fontSize = "2.2vmin";
                 } else {
@@ -297,10 +328,8 @@ const setCards = (codes) => {
                 }
             }
         }
-        i++;
+        // i++;
     });
-
-
 }
 
 const localStorageCodes = () => {
@@ -309,7 +338,8 @@ const localStorageCodes = () => {
     let randomizedCodes;
     
     if (typeof(localStorage.codes) == "undefined") {
-        codes = countries.map(a => a.code);
+        // codes = countries.map(a => a.code);
+        codes = codes2;
         // console.log(codes);
         randomizedCodes = codes.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
         // console.log(randomizedCodes);
@@ -322,26 +352,27 @@ const localStorageCodes = () => {
 
     if (codes.length < numberOfCards/2){
         // randomizedCodes = codes.concat(countries.map(a => a.code).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]));
+        console.log("codes2: ", codes2);
         do{
-            randomizedCodes = countries.map(a => a.code).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
+            randomizedCodes = codes2.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
+            console.log("randomizedCodes: ", randomizedCodes);
         } while(randomizedCodes.slice(0, codes.length).some(r => codes.includes(r)));
+
+
 
         randomizedCodes = codes.concat(randomizedCodes);
         localStorage.codes = JSON.stringify(randomizedCodes);
         codes = JSON.parse(localStorage.codes).slice(0, numberOfCards/2);
-
     }
 
+    // console.log("from storage");
+    // console.log(codes);
 
-    console.log("from storage");
-    console.log(codes);
-
-    // localStorage.codes = JSON.stringify(JSON.parse(localStorage.codes).slice(numberOfCards/2));
+    localStorage.codes = JSON.stringify(JSON.parse(localStorage.codes).slice(numberOfCards/2));
 
     codes = shuffleCodes(codes);
 
-
-    console.log(codes);
+    // console.log(codes);
 
     return codes;
 
@@ -377,6 +408,8 @@ const init = () => {
     // }
    
     countries = getDataFromJSON();
+
+    console.log("countries", countries);
     // let codes;
     
     codes = localStorageCodes(); 
@@ -396,15 +429,18 @@ const init = () => {
     // document.querySelector("body").style.transition = 'opacity 2s linear';
     // document.querySelector("body").style.opacity = 1;
 
-    let i = 0;
+    // let i = 0;
     let delays = Array.from({length: numberOfCards}, (_, i) => i/7);
     delays = delays.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
     console.log(delays);
-    document.querySelectorAll(".flip-container").forEach((card) => {
+    document.querySelectorAll(".flip-container").forEach((card, i) => {
         if (i < numberOfCards){
             card.style.transition = `opacity 0s linear ${delays[i]}s`;
             card.style.opacity = 1;
-            i++;
+
+            // card.classList.toggle("flip");
+
+            // i++;
         }
      });
 
@@ -420,11 +456,14 @@ window.onload = () => {
 
         // init();
 
-        // function preventDefault(e){
-        //     e.preventDefault();
-        // }
+        function preventDefault(e){
+            e.preventDefault();
+        }
         
-        // document.body.addEventListener('touchmove', preventDefault, { passive: false });
+        document.body.addEventListener('touchmove', preventDefault, { passive: false });
+        
+        
+        
         // document.querySelector("body").style.transition = 'opacity 2s ease';
 
     
