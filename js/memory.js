@@ -23,13 +23,14 @@ const shuffleCodes = (codes) => {
 const firework = () => {
     const minSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--minSide'));
     const maxSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--maxSide'));
+
     let cardNumbers = Array.from({length: numberOfCards}, (_, i) => i).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
 
     let big12 = 0;
     let doubles = [];
     let bigCard;
 
-    console.log("WIN!!!")
+    // console.log("WIN!!!")
     document.querySelectorAll(".flip-container").forEach((card) => {
         card.style.opacity = 0;
         card.classList.toggle("flip");
@@ -46,7 +47,7 @@ const firework = () => {
     function zooming(){
         if (i == codes.length){
             clearInterval(zoomingInterval);
-            console.log("Stop animation");
+            // console.log("Stop animation");
             setTimeout(() => {
                 document.querySelectorAll("#big1, #big2").forEach((card) => {
                     card.style.display = "none";
@@ -62,23 +63,30 @@ const firework = () => {
             window.innerHeight > window.innerWidth ? offsetLeft = (cardNumbers[i] + minSide) % minSide : offsetLeft = (cardNumbers[i] + maxSide) % maxSide;
             window.innerHeight > window.innerWidth ? offsetTop = Math.floor(cardNumbers[i] / minSide) : offsetTop = Math.floor(cardNumbers[i] / maxSide);
 
-            console.log("offsetLeft: ", offsetLeft);
-            console.log("offsetTop: ", offsetTop);
-            console.log("i: ", i);
+            // console.log("offsetLeft: ", offsetLeft);
+            // console.log("offsetTop: ", offsetTop);
+            // console.log("i: ", i);
 
             document.documentElement.style.setProperty('--offsetLeft', offsetLeft);
             document.documentElement.style.setProperty('--offsetTop', offsetTop);
 
             // document.querySelector(`#big${1 - big12}`).classList.remove("zoom");
-            console.log("Zooming!")
+            // console.log("Zooming!")
             bigCard = document.querySelector(`#big${big12 + 1} img`);
-            bigCard.src = `/images/flags/${codes[cardNumbers[i]]}.png`;
+            bigCard.src = `./images/flags/${codes[cardNumbers[i]]}.png`;
             name  = countries.find(x => x.code === codes[cardNumbers[i]].toUpperCase()).name;
-            // name  = countries.find(x => x.code === codes[cardNumbers[i]]).name;
-
-
-
             bigCard.nextElementSibling.querySelector('p').innerHTML = name;
+            bigCard.nextElementSibling.querySelector('p').style.fontSize = "";
+            let fontSizeBig = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fontSizeBig'));
+            while (parseFloat(getComputedStyle(bigCard.nextElementSibling).getPropertyValue("width")) < parseFloat(getComputedStyle(bigCard.nextElementSibling.querySelector('p')).getPropertyValue("width"))) {
+                fontSizeBig -= 0.1;
+                bigCard.nextElementSibling.querySelector('p').style.fontSize = fontSizeBig + "vmin";
+
+                console.log(fontSizeBig);
+            }
+
+
+
             // bigCard.nextElementSibling.querySelector('p').innerHTML = "Democratic Republic of the Congo";
             document.querySelector(`#big${big12 + 1}`).classList.add("zoom");
             doubles.push(codes[cardNumbers[i]]); 
@@ -94,7 +102,13 @@ const firework = () => {
 
 const flipCard = (e) => {
 
-    // alert("Language change");
+    // alert(`P height: ${getComputedStyle(e.currentTarget.querySelector("p")).getPropertyValue("height")} \nDiv height: ${getComputedStyle(e.currentTarget.querySelector(".country")).getPropertyValue("height")} \nLength: ${e.currentTarget.querySelector("p").innerHTML.length} \nFont: ${parseFloat(getComputedStyle(e.currentTarget.querySelector("p")).getPropertyValue("font-size")) * 100 / window.innerWidth}`);
+
+    // alert(`P width: ${getComputedStyle(e.currentTarget.querySelector("p")).getPropertyValue("width")} \nDiv width: ${getComputedStyle(e.currentTarget.querySelector(".country")).getPropertyValue("width")} \nLength: ${e.currentTarget.querySelector("p").innerHTML.length} \nFont: ${parseFloat(getComputedStyle(e.currentTarget.querySelector("p")).getPropertyValue("font-size")) * 100 / window.innerWidth}`);
+    // alert(`Height: ${window.screen.height - window.innerHeight} \nWidth: ${window.screen.width - window.innerWidth}`);
+    // alert(`ScreenHeight: ${window.screen.height} \nScreenWidth: ${window.screen.width} \nOuterHeight: ${window.outerHeight} \nOuterWidth: ${window.outerWidth} \nInnerHeight: ${window.innerHeight} \nInnerWidth: ${window.innerWidth} \nAvailHeight: ${window.screen.availHeight} \nAvailWidth: ${window.screen.availWidth}`);
+    // alert(window.navigator.standalone);
+
 
     if( typeof flipCard.numberOfTurnedCards == 'undefined' ) {
         flipCard.numberOfTurnedCards = 0;
@@ -108,11 +122,16 @@ const flipCard = (e) => {
         flipCard.turnedCards = [];
     }
 
+    // console.log("Opacity: ", e.currentTarget.style.opacity);
+    // console.log("Opacity: ", getComputedStyle(e.currentTarget).getPropertyValue("opacity"));
+    if (getComputedStyle(e.currentTarget).getPropertyValue("opacity") == 0) return;
+
+
     // if( typeof flipCard.turnedCards == 'undefined' ) {
     //     flipCard.guessedCards = [];
     // }
 
-    if (flipCard.numberOfTurnedCards == 1 && e.currentTarget.id == flipCard.turnedCards[0].id) {console.log("return"); return;}
+    if (flipCard.numberOfTurnedCards == 1 && e.currentTarget.id == flipCard.turnedCards[0].id) {return;}
 
     if (flipCard.numberOfTurnedCards == 2){
         clearTimeout(autoTurn);
@@ -127,13 +146,13 @@ const flipCard = (e) => {
     e.currentTarget.classList.toggle("flip");
 
     flipCard.numberOfTurnedCards++;
-    console.log("numberOfTurnedCards", flipCard.numberOfTurnedCards);
+    // console.log("numberOfTurnedCards", flipCard.numberOfTurnedCards);
   
     if (flipCard.numberOfTurnedCards == 2){
 
         if (flipCard.turnedCards[0].querySelector("p").innerHTML == flipCard.turnedCards[1].querySelector("p").innerHTML){
             flipCard.numberOfTurnedCards = 0;
-            console.log("Match!");
+            // console.log("Match!");
             document.querySelectorAll(`#${flipCard.turnedCards[0].id}, #${flipCard.turnedCards[1].id}`).forEach((card) => {
                 if (matchMedia('(hover: none)').matches){
                     card.removeEventListener("touchstart", flipCard);
@@ -145,7 +164,7 @@ const flipCard = (e) => {
             });
             // flipCard.guessedCards[flipCard.winPairs] = 
             flipCard.winPairs++;
-            console.log("winPairs " + flipCard.winPairs);
+            // console.log("winPairs " + flipCard.winPairs);
             if (flipCard.winPairs == numberOfCards/2) {
                 flipCard.winPairs = 0;
                 // localStorage.codes = JSON.stringify(JSON.parse(localStorage.codes).slice(numberOfCards/2));
@@ -174,35 +193,49 @@ const setEventListeners = () => {
 
 const setNumberOfCards = () => {
 
-    console.log(screen.width/screen.height);
+    // console.log(screen.width/screen.height);
     
     if(screen.width < 460 || screen.height < 460){
         if (screen.width/screen.height > 0.5 && screen.width/screen.height < 2){
-            numberOfCards = 24;
-            document.documentElement.style.setProperty('--minSide', 4);
-            document.documentElement.style.setProperty('--maxSide', 6);
-            document.querySelectorAll("#card25, #card26, #card27, #card28, #card29, #card30").forEach((card) => {
+            if (window.navigator.standalone) {
+                numberOfCards = 28;
+                document.documentElement.style.setProperty('--minSide', 4);
+                document.documentElement.style.setProperty('--maxSide', 7);
+                document.querySelectorAll("#card29, #card30, #card31, #card32").forEach((card) => {
                 card.style.display = "none";
-            });
+                });
 
-            // document.querySelector("#card25").style.display = "none";
-            // document.querySelector('#card26').style.display = "none";
-            // document.querySelector('#card27').style.display = "none";
-            // document.querySelector('#card28').style.display = "none";
-            // document.querySelector('#card29').style.display = "none";
-            // document.querySelector('#card30').style.display = "none";
-        } else {
-            numberOfCards = 28;
-            document.documentElement.style.setProperty('--minSide', 4);
-            document.documentElement.style.setProperty('--maxSide', 7);
-            document.querySelectorAll("#card29, #card30").forEach((card) => {
+
+            } else {
+                numberOfCards = 24;
+                document.documentElement.style.setProperty('--minSide', 4);
+                document.documentElement.style.setProperty('--maxSide', 6);
+                document.querySelectorAll("#card25, #card26, #card27, #card28, #card29, #card30, #card31, #card32").forEach((card) => {
                 card.style.display = "none";
-            });
-            // document.querySelector('#card29').style.display = "none";
-            // document.querySelector('#card30').style.display = "none";
+            
+                });
+            }
+
+
+        } else {
+            if (window.navigator.standalone) {
+                numberOfCards = 32;
+                document.documentElement.style.setProperty('--minSide', 4);
+                document.documentElement.style.setProperty('--maxSide', 8);
+            } else {
+                numberOfCards = 28;
+                document.documentElement.style.setProperty('--minSide', 4);
+                document.documentElement.style.setProperty('--maxSide', 7);
+                document.querySelectorAll("#card29, #card30, #card31, #card32").forEach((card) => {
+                    card.style.display = "none";
+                });
+            }    
         }
     } else {
          numberOfCards = 30;
+         document.querySelectorAll("#card31, #card32").forEach((card) => {
+            card.style.display = "none";
+        });
     }
 }
 
@@ -229,16 +262,16 @@ const setTheBoard = () => {
     }
     // console.log(100/window.innerWidth * Math.ceil(window.innerWidth*boardSize/minSide)*minSide);
 
-    console.log(innerHeight);
-    console.log(innerWidth);
-    console.log(getComputedStyle(document.documentElement).getPropertyValue('--boardSize'));
+    // console.log(innerHeight);
+    // console.log(innerWidth);
+    // console.log(getComputedStyle(document.documentElement).getPropertyValue('--boardSize'));
 
 
     // console.log(Math.ceil(window.innerWidth * 0.95 / 4) * 4);
     // console.log(minSide);
     // console.log(Math.ceil(window.innerWidth * 0.95 / (minSide * 100)) * minSide * 100);
-    console.log(getComputedStyle(document.documentElement).getPropertyValue('--minSide'));
-    console.log(getComputedStyle(document.documentElement).getPropertyValue('--maxSide'));
+    // console.log(getComputedStyle(document.documentElement).getPropertyValue('--minSide'));
+    // console.log(getComputedStyle(document.documentElement).getPropertyValue('--maxSide'));
 
 
     // console.log(screen.height);
@@ -254,11 +287,125 @@ const setTheBoard = () => {
 
 const getDataFromJSON = () => {
     let data;
-    console.log(navigator.language.slice(0, 2));
+    // console.log(navigator.languages);
+    // console.log(navigator.language.slice(0, 2));
 
     switch(navigator.language.slice(0, 2)){
         case "en": data = en; break;        
         case "ru": data = ru; break;
+        case "de": data = de; break;
+        case "fr": data = fr; break;
+        case "es": data = es; break;
+        case "it": data = it; break;
+        case "pt": data = pt; break;
+        case "nl": data = nl; break;
+        case "sv": data = sv; break;
+        case "da": data = da; break;
+        case "nb": data = nb; break;
+        case "fi": data = fi; break;
+        case "ca": data = ca; break;
+        case "el": data = el; break;
+        case "hr": data = hr; break;
+        case "cs": data = cs; break;
+        case "he": data = he; break;
+        case "ar": data = ar; break;
+        case "hi": data = hi; break;
+        case "hu": data = hu; break;
+        case "id": data = id; break;
+        case "ja": data = ja; break;
+        case "ko": data = ko; break;
+        case "ms": data = ms; break;
+        case "pl": data = pl; break;
+        case "ro": data = ro; break;
+        case "sk": data = sk; break;
+        case "th": data = th; break;
+        case "tr": data = tr; break;
+        case "uk": data = uk; break;
+        case "vi": data = vi; break;
+
+        case "be": data = be; break;
+        case "lv": data = lv; break;
+        case "lt": data = lt; break;
+        case "et": data = et; break;
+        case "bg": data = bg; break;
+        case "sl": data = sl; break;
+        case "sr": navigator.language.slice(3, 5) == "rs" ? data = sr_rs : data = sr_latn; break;
+        // case "sr_rs": data = sr_rs; break;
+        // case "sr_latn": data = sr_latn; break;
+
+        case "hy": data = hy; break;
+        case "ka": data = ka; break;
+        case "az": data = az; break;
+        case "kk": data = kk; break;
+        case "uz": data = uz; break;
+        case "ky": data = ky; break;
+        case "tg": data = tg; break;
+        case "tk": data = tk; break;
+        case "tt": data = tt; break;
+        case "af": data = af; break;
+        case "sq": data = sq; break;
+
+        case "bs": navigator.language.slice(3, 5) == "ba" ? data = bs_ba : data = bs_cyrl; break;
+        // case "bs_ba": data = bs_ba; break;
+        // case "bs_cyrl": data = bs_cyrl; break;
+
+        case "is": data = is; break;
+        case "am": data = am; break;
+        case "as": data = as; break;
+        case "eu": data = eu; break;
+        case "bn": data = bn; break;
+        case "br": data = br; break;
+        case "my": data = my; break;
+        case "ce": data = ce; break;
+        case "dz": data = dz; break;
+        case "fo": data = fo; break;
+        case "gl": data = gl; break;
+        case "gu": data = gu; break;
+        case "ha": data = ha; break;
+        case "ga": data = ga; break;
+        case "jv": data = jv; break;
+        case "kn": data = kn; break;
+        case "ks": data = ks; break;
+        case "km": data = km; break;
+        case "lb": data = lb; break;
+        case "lo": data = lo; break;
+        case "mk": data = mk; break;
+        case "ml": data = ml; break;
+        case "mt": data = mt; break;
+        case "mr": data = mr; break;
+        case "mn": data = mn; break;
+        case "ne": data = ne; break;
+        case "nn": data = nn; break;
+        case "no": data = nb; break;
+        case "or": data = or; break;
+        case "pa": data = pa; break;
+        case "fa": data = fa; break;
+        case "sd": data = sd; break;
+        case "gd": data = gd; break;
+        case "si": data = si; break;
+        case "sw": data = sw; break;
+        case "ta": data = ta; break;
+        case "te": data = te; break;
+        case "ti": data = ti; break;
+        case "ug": data = ug; break;
+        case "ur": data = ur; break;
+        case "cy": data = cy; break;
+
+        case "zh": 
+            switch(navigator.language.slice(3, 5)){
+                case "cn": data = zh_cn; break;
+                case "hk": data = zh_hk; break;
+                case "mo": data = zh_mo; break;
+                case "tw": data = zh_tw; break;
+            }
+            break;
+
+        // case "zh_cn": data = zh_cn; break;
+        // case "zh_hk": data = zh_hk; break;
+        // case "zh_mo": data = zh_mo; break;
+        // case "zh_tw": data = zh_tw; break;
+
+       
         default: data = en; break;
     }
     // let data = list;
@@ -276,7 +423,7 @@ const setBackColor = () => {
         backColors.push(backColors.shift());
         localStorage.colors = JSON.stringify(backColors);
     }
-    console.log(localStorage.colors);
+    // console.log(localStorage.colors);
 
     document.documentElement.style.setProperty('--backColor', backColors[0]);
 
@@ -298,7 +445,6 @@ const setBackColor = () => {
 
 const setCards = (codes) => {
 
-    // let i = 0
     let name;
 
     setBackColor();
@@ -306,29 +452,48 @@ const setCards = (codes) => {
     document.querySelectorAll('.card img').forEach((image, i) => {
         if (i < numberOfCards) {
 
-            console.log("code", codes[i]);
-
             name  = countries.find(x => x.code === codes[i].toUpperCase()).name;
 
-            //  name = "Democratic Republic of the Congo";
-
-            image.src = `/images/flags/${codes[i]}.png`;
+            image.src = `./images/flags/${codes[i]}.png`;
+            image.nextElementSibling.querySelector('p').style.fontSize = "";
             image.nextElementSibling.querySelector('p').innerHTML = name;
-                // image.nextElementSibling.querySelector('p').innerHTML = "Democratic Republic of the Congo";
-                // image.nextElementSibling.querySelector('p').innerHTML = "Объединенные арабские эмираты";
-                
-            
-            // console.log((cards[i].ru).split(" ").length);
-            if ((name).split(/-| /).length > 2 && (name).length > 24){
-                // image.nextElementSibling.querySelector('p').style.lineHeight = 0.9;
-                if(screen.width > 460 && screen.height > 460){
-                    image.nextElementSibling.querySelector('p').style.fontSize = "2.2vmin";
-                } else {
-                    image.nextElementSibling.querySelector('p').style.fontSize = "2.8vmin";
-                }
+            // console.log("fontsize: ", parseFloat(getComputedStyle(image.nextElementSibling.firstElementChild).getPropertyValue("font-size")) * 100 / window.innerWidth);
+            // console.log(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fontSize')));
+
+            // console.log("div height:", getComputedStyle(image.nextElementSibling).getPropertyValue("height"));
+            // console.log("p height:", getComputedStyle(image.nextElementSibling.firstElementChild).getPropertyValue("height"));
+
+            let fontSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fontSize'));
+
+            while (parseFloat(getComputedStyle(image.nextElementSibling).getPropertyValue("height")) < parseFloat(getComputedStyle(image.nextElementSibling.firstElementChild).getPropertyValue("height"))) {
+                fontSize -= 0.1;
+                image.nextElementSibling.firstElementChild.style.fontSize = fontSize + "vmin";
+
+                // console.log(fontSize);
             }
+            if (fontSize < parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fontSize'))){
+                fontSize -= 0.1;
+                image.nextElementSibling.firstElementChild.style.fontSize = fontSize + "vmin";
+            }
+
+            while (parseFloat(getComputedStyle(image.nextElementSibling).getPropertyValue("width")) < parseFloat(getComputedStyle(image.nextElementSibling.firstElementChild).getPropertyValue("width"))) {
+                fontSize -= 0.1;
+                image.nextElementSibling.firstElementChild.style.fontSize = fontSize + "vmin";
+
+                // console.log(fontSize);
+            }
+                    
+
+            // if ((name).split(/-| /).length > 2 && (name).length > 24){
+            //     // image.nextElementSibling.querySelector('p').style.lineHeight = 0.9;
+            //     if(screen.width > 460 && screen.height > 460){
+            //         image.nextElementSibling.querySelector('p').style.fontSize = "2.1vmin";
+
+            //     } else {
+            //         image.nextElementSibling.querySelector('p').style.fontSize = "2.8vmin";
+            //     }
+            // }
         }
-        // i++;
     });
 }
 
@@ -340,37 +505,47 @@ const localStorageCodes = () => {
     if (typeof(localStorage.codes) == "undefined") {
         // codes = countries.map(a => a.code);
         codes = codes2;
-        // console.log(codes);
+     
         randomizedCodes = codes.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
-        // console.log(randomizedCodes);
+        // randomizedCodes = codes2; // test
+
+
         localStorage.codes = JSON.stringify(randomizedCodes);
-        console.log("undefined");
-        console.log(localStorage.codes);
+        // console.log("undefined");
+        // console.log(localStorage.codes);
     } 
  
     codes = JSON.parse(localStorage.codes).slice(0, numberOfCards/2);
+    // codes = JSON.parse(localStorage.codes).slice(0, numberOfCards); //test
 
     if (codes.length < numberOfCards/2){
+        // if (codes.length < numberOfCards){   //test
+    
         // randomizedCodes = codes.concat(countries.map(a => a.code).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]));
-        console.log("codes2: ", codes2);
+        // console.log("codes2: ", codes2);
         do{
             randomizedCodes = codes2.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
-            console.log("randomizedCodes: ", randomizedCodes);
+            // console.log("randomizedCodes: ", randomizedCodes);
         } while(randomizedCodes.slice(0, codes.length).some(r => codes.includes(r)));
 
 
 
         randomizedCodes = codes.concat(randomizedCodes);
         localStorage.codes = JSON.stringify(randomizedCodes);
+        
         codes = JSON.parse(localStorage.codes).slice(0, numberOfCards/2);
+        // codes = JSON.parse(localStorage.codes).slice(0, numberOfCards);  //test
     }
 
     // console.log("from storage");
     // console.log(codes);
 
     localStorage.codes = JSON.stringify(JSON.parse(localStorage.codes).slice(numberOfCards/2));
+    // localStorage.codes = JSON.stringify(JSON.parse(localStorage.codes).slice(numberOfCards));  //test
 
-    codes = shuffleCodes(codes);
+
+
+    codes = shuffleCodes(codes);  //no test
 
     // console.log(codes);
 
@@ -384,9 +559,43 @@ const localStorageCodes = () => {
     // console.log(countries[20].name);
 }
 
+const showUp = () => {
+
+    let delays = Array.from({length: numberOfCards}, (_, i) => i/7);
+    delays = delays.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
+    // console.log(delays);
+    document.querySelectorAll(".flip-container").forEach((card, i) => {
+        if (i < numberOfCards){
+            card.style.transition = `opacity 0s linear ${delays[i]}s`; //notest
+            card.style.opacity = 1;
+            // card.style.opacity = 0; //test
+
+
+            // card.classList.toggle("flip");
+
+        }
+    });
+
+    // let bigCard = document.querySelector("#big2");
+    // bigCard.style.opacity = 1;
+    // bigCard.style.display = "flex";
+    // bigCard.querySelector("img").src = "/images/flags/am.png";
+    // bigCard.querySelector("p").innerHTML = countries.find(x => x.code === "cf".toUpperCase()).name;
+    // bigCard.querySelector('p').style.fontSize = "";
+    // let fontSizeBig = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fontSizeBig'));
+    // while (parseFloat(getComputedStyle(bigCard.querySelector('.country')).getPropertyValue("width")) < parseFloat(getComputedStyle(bigCard.querySelector('p')).getPropertyValue("width"))) {
+    //     fontSizeBig -= 0.1;
+    //     bigCard.querySelector('p').style.fontSize= fontSizeBig + "vmin";
+
+    //     console.log(fontSizeBig);
+    // }
+    
+            
+}
+
 const init = () => {
 
-    console.log("init");
+    // console.log("init");
 
     // let data;
     // winPairs = 0;
@@ -409,7 +618,7 @@ const init = () => {
    
     countries = getDataFromJSON();
 
-    console.log("countries", countries);
+    // console.log("countries", countries);
     // let codes;
     
     codes = localStorageCodes(); 
@@ -430,20 +639,8 @@ const init = () => {
     // document.querySelector("body").style.opacity = 1;
 
     // let i = 0;
-    let delays = Array.from({length: numberOfCards}, (_, i) => i/7);
-    delays = delays.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
-    console.log(delays);
-    document.querySelectorAll(".flip-container").forEach((card, i) => {
-        if (i < numberOfCards){
-            card.style.transition = `opacity 0s linear ${delays[i]}s`;
-            card.style.opacity = 1;
-
-            // card.classList.toggle("flip");
-
-            // i++;
-        }
-     });
-
+    
+    showUp();
     // setTimeout(function() {document.querySelector('#card1').classList.toggle("hover");
     // console.log("timeout");
     // }, 5000);
@@ -454,19 +651,12 @@ const init = () => {
 window.onload = () => {
     document.fonts.ready.then(() => {
 
-        // init();
-
         function preventDefault(e){
             e.preventDefault();
         }
         
         document.body.addEventListener('touchmove', preventDefault, { passive: false });
         
-        
-        
-        // document.querySelector("body").style.transition = 'opacity 2s ease';
-
-    
         init();
         // setTimeout(1000, init);
     });

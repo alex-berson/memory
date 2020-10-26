@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Memory Game Online</title>
     <meta name="description" content="Memory. Matching falgs game">
-    <meta name="keywords" content="memory, puzzle, flags, game, cards, online, matching, play">
+    <meta name="keywords" content="memory, puzzle, flags, game, cards, online, board, matching, play">
     <meta name="author" content="Alexander Berson">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -14,24 +14,125 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Memory">
     <meta name="theme-color" content="#5f9ea0">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <link rel="shortcut icon" href="images/favicon.ico">
-    <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5f9ea0">   
+    <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicon-16x16.png">
+    <link rel="shortcut icon" href="images/icons/favicon.ico">
+    <link rel="mask-icon" href="/images/icons/safari-pinned-tab.svg" color="#5f9ea0">   
     <meta name="msapplication-cardColor" content="#5f9ea0">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="js/data.js"></script>
-    <!-- <script src="js/colors.js"></script> -->
-    <!-- <script src="js/codes.js"></script> -->
-    <!-- <script src="json/countries.json"></script> -->
-    <!-- <script src="json/en.json"></script> -->
-    <!-- <script src="json/ru.json"></script> -->
-    <script src="json/en2.json"></script>
-    <script src="json/ru2.json"></script>
+
+
+    <script src="json/en.json"></script>
+    <script src="json/ru.json"></script>
+    <script src="json/de.json"></script>
+    <script src="json/fr.json"></script>
+    <script src="json/es.json"></script>
+    <script src="json/it.json"></script>
+    <script src="json/pt.json"></script>
+    <script src="json/nl.json"></script>
+    <script src="json/sv.json"></script>
+    <script src="json/da.json"></script>
+    <script src="json/nb.json"></script>
+
+    <script src="json/fi.json"></script>
+    <script src="json/ca.json"></script>
+    <script src="json/el.json"></script>
+    <script src="json/hr.json"></script>
+    <script src="json/cs.json"></script>
+    <script src="json/he.json"></script>
+    <script src="json/ar.json"></script>
+    <script src="json/hi.json"></script>
+    <script src="json/hu.json"></script>
+    <script src="json/id.json"></script>
+    <script src="json/ja.json"></script>
+    <script src="json/ko.json"></script>
+    <script src="json/ms.json"></script>
+    <script src="json/pl.json"></script>
+    <script src="json/ro.json"></script>
+    <script src="json/sk.json"></script>
+    <script src="json/th.json"></script>
+    <script src="json/tr.json"></script>
+    <script src="json/uk.json"></script>
+    <script src="json/vi.json"></script>
+ 
+    <script src="json/be.json"></script>
+    <script src="json/lv.json"></script>
+    <script src="json/lt.json"></script>
+    <script src="json/et.json"></script>
+    <script src="json/bg.json"></script>
+    <script src="json/sl.json"></script>
+    <script src="json/sr-rs.json"></script>
+    <script src="json/sr-latn.json"></script>
+    <script src="json/hy.json"></script>
+    <script src="json/ka.json"></script>
+    <script src="json/az.json"></script>
+    <script src="json/kk.json"></script>
+    <script src="json/uz.json"></script>
+    <script src="json/ky.json"></script>
+    <script src="json/tg.json"></script>
+    <script src="json/tk.json"></script>
+    <script src="json/tt.json"></script>
+    <script src="json/af.json"></script>
+    <script src="json/sq.json"></script>
+    <script src="json/bs-ba.json"></script>
+    <script src="json/bs-cyrl.json"></script>
+    <script src="json/is.json"></script>
+
+    <script src="json/am.json"></script>
+    <script src="json/as.json"></script>
+    <script src="json/eu.json"></script>
+    <script src="json/bn.json"></script>
+    <script src="json/br.json"></script>
+    <script src="json/my.json"></script>
+    <script src="json/ce.json"></script>
+    <script src="json/dz.json"></script>
+    <script src="json/fo.json"></script>
+    <script src="json/gl.json"></script>
+    <script src="json/gu.json"></script>
+    <script src="json/ha.json"></script>
+    <script src="json/ga.json"></script>
+    <script src="json/jv.json"></script>
+    <script src="json/kn.json"></script>
+    <script src="json/ks.json"></script>
+    <script src="json/km.json"></script>
+    <script src="json/lb.json"></script>
+    <script src="json/lo.json"></script>
+
+    <script src="json/mk.json"></script>
+    <script src="json/ml.json"></script>
+    <script src="json/mt.json"></script>
+    <script src="json/mr.json"></script>
+    <script src="json/mn.json"></script>
+    <script src="json/ne.json"></script>
+    <script src="json/nn.json"></script>
+    <script src="json/or.json"></script>
+    <script src="json/pa.json"></script>
+    <script src="json/fa.json"></script>
+    <script src="json/pa.json"></script>
+    <script src="json/sd.json"></script>
+    <script src="json/gd.json"></script>
+    <script src="json/si.json"></script>
+    <script src="json/sw.json"></script>
+    <script src="json/ta.json"></script>
+    <script src="json/te.json"></script>
+    <script src="json/ti.json"></script>
+    <script src="json/ug.json"></script>
+    <script src="json/ur.json"></script>
+    <script src="json/cy.json"></script>
+
+    <script src="json/zh-cn.json"></script>
+    <script src="json/zh-hk.json"></script>
+    <script src="json/zh-tw.json"></script>
+    <script src="json/zh-mo.json"></script>
+
     <script src="js/memory.js"></script>
-    <script src="js/fetch.js"></script>
+    <!-- <script src="js/fetch.js"></script> -->
+    <script src="js/test.js"></script>
+
+
 </head>
 <body class="noselect">
     <header>
@@ -44,11 +145,11 @@
             <div id="card1" class="flip-container">
                 <div class="flipper">
                     <div class="back">
-                        <div class="card" class="back">
+                        <div class="card">
                         </div>
                     </div>
                     <div class="front">
-                        <div class="card" class="front">
+                        <div class="card">
                             <img src="" alt="">
                             <div class="country">
                                 <p></p>
@@ -522,6 +623,38 @@
                     </div>
                 </div>
             </div>
+            <div id="card31" class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="card32" class="flip-container">
+                <div class="flipper">
+                    <div class="back">
+                        <div class="card">
+                        </div>
+                    </div>
+                    <div class="front">
+                        <div class="card">
+                            <img src="" alt="">
+                            <div class="country">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="big1" class="card">
                 <img src="" alt="">
                 <div class="country">
@@ -530,9 +663,9 @@
             </div>
             <div id="big2" class="card">
                 <img src="" alt="">
-                    <div class="country">
-                        <p></p>
-                    </div>
+                <div class="country">
+                    <p></p>
+                </div>
             </div>
         </div>
     </main>

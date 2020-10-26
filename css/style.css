@@ -27,6 +27,8 @@
     --gapSize: 2px;
     --backColor: cadetblue;
     --offset: -129px;
+    --fontSize: 3.2vmin;
+    --fontSizeBig: 8vmin;
     /* --offset2: calc( 348 / 4 * 3 / (-2))px; */
 }
 
@@ -113,8 +115,14 @@ h1{
     flex-direction: column;
 
     background: snow;
+    /* background: gray; */
+
+
     padding: 0;
-    font-size: 3.2vmin;
+    /* font-size: 3.2vmin; */
+    font-size: var(--fontSize);
+
+
     /* font-size: 3.0vmin; */
     /* line-height: 0.9; */
     text-align: center;
@@ -159,7 +167,7 @@ img{
 p{
     /* margin-top: 5px; */
     line-height: 0.9;
-    margin-top: 0;
+    margin-top: -1px;
     margin-bottom: 0;
     word-spacing: -1px;
 
@@ -178,7 +186,7 @@ p{
 #big1, #big2{
     width: calc(var(--boardSize) / var(--minSide) * 3);
     height: calc(var(--boardSize) / var(--minSide) * 3);
-    font-size: 8vmin;
+    font-size: var(--fontSizeBig);
     border-radius: 10px;
     position: absolute;
     top: 50%;
@@ -298,12 +306,19 @@ p{
 }
 
 @media (min-width: 460px) and (min-height: 460px){
+    :root {
+        --fontSize: 2.5vmin;
+        --fontSizeBig: 6vmin;
+    }
+
     .card{
-        font-size: 2.5vmin;
+        /* font-size: 2.5vmin; */
+        font-size: var(--fontSize);
+
         /* margin: 2px; */
     }
     #big1, #big2{
-        font-size: 6vmin;
+        font-size: var(--fontSizeBig);;
     }
 }
 
