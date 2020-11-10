@@ -1,5 +1,6 @@
-// import { codes2 } from 'codes.js';
+// import { allCodes } from 'codes.js';
 // import { backColors } from 'colors.js';
+// 'use strict'
 
 const boardSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--boardSize'));
 let numberOfCards;
@@ -13,8 +14,20 @@ let codes = [];
               
 // }
 
-const shuffleCodes = (codes) => {
-    
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => {
+          console.log('Service worker registered!', reg);
+        })
+        .catch(err => {
+          console.log('Service worker registration failed: ', err);
+        });
+    });
+  }
+
+const shuffleCodes = () => {
+    // console.log("shuffleCodes: ",codes);
     // return codes.concat(codes).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
     return codes.concat(codes);
 
@@ -31,6 +44,7 @@ const firework = () => {
     let bigCard;
 
     // console.log("WIN!!!")
+    // console.log("guessedCards: ", flipCard.guessedCards);
     document.querySelectorAll(".flip-container").forEach((card) => {
         card.style.opacity = 0;
         card.classList.toggle("flip");
@@ -42,16 +56,18 @@ const firework = () => {
     document.querySelector(`#big1`).style.display = "flex";
 
     let i = 0;
-    zooming();
-    let  zoomingInterval = setInterval(zooming, 1100);
-    function zooming(){
+    const zooming = () => {
         if (i == codes.length){
             clearInterval(zoomingInterval);
             // console.log("Stop animation");
             setTimeout(() => {
                 document.querySelectorAll("#big1, #big2").forEach((card) => {
                     card.style.display = "none";
-                    card.classList.remove("zoom");
+                    if (iPhoneXApp()) {
+                        card.classList.remove("zoomX");
+                    } else {
+                        card.classList.remove("zoom");
+                    }
                 });
                 // document.querySelector('#big1').style.display = "none";
                 // document.querySelector('#big2').style.display = "none";
@@ -59,7 +75,7 @@ const firework = () => {
                 // document.querySelector('#big2').classList.remove("zoom");
                 init();}, 1000);
         } else {
-
+            let offsetLeft, offsetTop;
             window.innerHeight > window.innerWidth ? offsetLeft = (cardNumbers[i] + minSide) % minSide : offsetLeft = (cardNumbers[i] + maxSide) % maxSide;
             window.innerHeight > window.innerWidth ? offsetTop = Math.floor(cardNumbers[i] / minSide) : offsetTop = Math.floor(cardNumbers[i] / maxSide);
 
@@ -88,16 +104,26 @@ const firework = () => {
 
 
             // bigCard.nextElementSibling.querySelector('p').innerHTML = "Democratic Republic of the Congo";
-            document.querySelector(`#big${big12 + 1}`).classList.add("zoom");
+            if (iPhoneXApp()) {
+                document.querySelector(`#big${big12 + 1}`).classList.add("zoomX");
+            } else {
+                document.querySelector(`#big${big12 + 1}`).classList.add("zoom");
+            }
             doubles.push(codes[cardNumbers[i]]); 
             do {
                 i++;
             } while (doubles.includes(codes[cardNumbers[i]]) && i < codes.length);
             big12 = 1 - big12;
 
-            setTimeout(() => {document.querySelector(`#big${big12 + 1}`).classList.remove("zoom");}, 2000);
+            if (iPhoneXApp()) {
+                setTimeout(() => {document.querySelector(`#big${big12 + 1}`).classList.remove("zoomX");}, 2000);
+            } else {
+                setTimeout(() => {document.querySelector(`#big${big12 + 1}`).classList.remove("zoom");}, 2000);
+            }
         }
     }
+    zooming();
+    let  zoomingInterval = setInterval(zooming, 1100);
 }
 
 const flipCard = (e) => {
@@ -108,6 +134,15 @@ const flipCard = (e) => {
     // alert(`Height: ${window.screen.height - window.innerHeight} \nWidth: ${window.screen.width - window.innerWidth}`);
     // alert(`ScreenHeight: ${window.screen.height} \nScreenWidth: ${window.screen.width} \nOuterHeight: ${window.outerHeight} \nOuterWidth: ${window.outerWidth} \nInnerHeight: ${window.innerHeight} \nInnerWidth: ${window.innerWidth} \nAvailHeight: ${window.screen.availHeight} \nAvailWidth: ${window.screen.availWidth}`);
     // alert(window.navigator.standalone);
+
+    // var isCordovaApp = !!window.cordova;
+    // var isCordovaApp = document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
+
+    // var isCordovaApp = window.hasOwnProperty("cordova");
+    // alert(isCordovaApp);
+    // alert(getComputedStyle(document.documentElement).getPropertyValue('--boardSize'));
+
+    // alert(`Font: ${parseFloat(getComputedStyle(e.currentTarget.querySelector("p")).getPropertyValue("font-size")) * 100 / window.innerWidth}`);
 
 
     if( typeof flipCard.numberOfTurnedCards == 'undefined' ) {
@@ -121,6 +156,10 @@ const flipCard = (e) => {
     if( typeof flipCard.turnedCards == 'undefined' ) {
         flipCard.turnedCards = [];
     }
+
+    // if( typeof flipCard.guessedCards == 'undefined' ) {
+    //     flipCard.guessedCards = [];
+    // }
 
     // console.log("Opacity: ", e.currentTarget.style.opacity);
     // console.log("Opacity: ", getComputedStyle(e.currentTarget).getPropertyValue("opacity"));
@@ -151,8 +190,11 @@ const flipCard = (e) => {
     if (flipCard.numberOfTurnedCards == 2){
 
         if (flipCard.turnedCards[0].querySelector("p").innerHTML == flipCard.turnedCards[1].querySelector("p").innerHTML){
+            // flipCard.guessedCards.push(parseInt((flipCard.turnedCards[0].id).replace(/[^0-9]/g,'')));
+            // console.log("guessedCards: ", flipCard.guessedCards);
             flipCard.numberOfTurnedCards = 0;
             // console.log("Match!");
+
             document.querySelectorAll(`#${flipCard.turnedCards[0].id}, #${flipCard.turnedCards[1].id}`).forEach((card) => {
                 if (matchMedia('(hover: none)').matches){
                     card.removeEventListener("touchstart", flipCard);
@@ -160,6 +202,10 @@ const flipCard = (e) => {
                     card.removeEventListener("click", flipCard);
                 }
                 card.style.transition = 'opacity 2s linear';
+                // card.style.opacity = 0;
+            });
+
+            document.querySelectorAll(`#${flipCard.turnedCards[0].id}, #${flipCard.turnedCards[1].id}`).forEach((card) => {
                 card.style.opacity = 0;
             });
             // flipCard.guessedCards[flipCard.winPairs] = 
@@ -196,33 +242,32 @@ const setNumberOfCards = () => {
     // console.log(screen.width/screen.height);
     
     if(screen.width < 460 || screen.height < 460){
-        if (screen.width/screen.height > 0.5 && screen.width/screen.height < 2){
-            if (window.navigator.standalone) {
+        if (screen.width/screen.height > 0.5 && screen.height/screen.width < 2){
+            if (window.navigator.standalone || (document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1)) {
                 numberOfCards = 28;
                 document.documentElement.style.setProperty('--minSide', 4);
                 document.documentElement.style.setProperty('--maxSide', 7);
                 document.querySelectorAll("#card29, #card30, #card31, #card32").forEach((card) => {
-                card.style.display = "none";
+                    card.style.display = "none";
                 });
-
-
             } else {
                 numberOfCards = 24;
                 document.documentElement.style.setProperty('--minSide', 4);
                 document.documentElement.style.setProperty('--maxSide', 6);
                 document.querySelectorAll("#card25, #card26, #card27, #card28, #card29, #card30, #card31, #card32").forEach((card) => {
-                card.style.display = "none";
-            
+                    card.style.display = "none";
                 });
             }
-
-
         } else {
-            if (window.navigator.standalone) {
+            if (window.navigator.standalone || (document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1)) {
                 numberOfCards = 32;
                 document.documentElement.style.setProperty('--minSide', 4);
                 document.documentElement.style.setProperty('--maxSide', 8);
             } else {
+                // numberOfCards = 32;
+                // document.documentElement.style.setProperty('--minSide', 4);
+                // document.documentElement.style.setProperty('--maxSide', 8);
+
                 numberOfCards = 28;
                 document.documentElement.style.setProperty('--minSide', 4);
                 document.documentElement.style.setProperty('--maxSide', 7);
@@ -237,6 +282,16 @@ const setNumberOfCards = () => {
             card.style.display = "none";
         });
     }
+}
+
+const iPhoneXApp = () => {
+    if ((document.URL.indexOf('http://') == -1 && document.URL.indexOf('https://') == -1) && 
+        (screen.width < 460 || screen.height < 460) && 
+        (screen.width/screen.height < 0.5 && screen.height/screen.width > 2)) {
+            return true;
+    } 
+    return false;
+
 }
 
 const setTheBoard = () => {
@@ -260,11 +315,20 @@ const setTheBoard = () => {
     } else {
         document.documentElement.style.setProperty('--boardSize', Math.ceil(window.innerHeight * boardSize / (minSide)) * minSide + 'px');
     }
+
+    if (iPhoneXApp()) {
+
+            document.querySelector(".board").style.marginBottom = "-15px";
+    } 
+
+    // if (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--boardSize')) > 500) {
+    //     document.documentElement.style.setProperty('--boardSize', '500px');
+    // }
     // console.log(100/window.innerWidth * Math.ceil(window.innerWidth*boardSize/minSide)*minSide);
 
     // console.log(innerHeight);
     // console.log(innerWidth);
-    // console.log(getComputedStyle(document.documentElement).getPropertyValue('--boardSize'));
+    // console.log(parseInt(getComputedStyle(document.documentElement).getPropertyValue('--boardSize')));
 
 
     // console.log(Math.ceil(window.innerWidth * 0.95 / 4) * 4);
@@ -284,6 +348,17 @@ const setTheBoard = () => {
     // document.querySelector("#country1").innerHTML = outerHeight;
     // document.querySelector("#country2").innerHTML = innerHeight;
 }
+
+
+// const getDataFromJSON2 = () => {
+//     let xhr = new XMLHttpRequest();
+//     xhr.open("GET", "ru.json", false);
+//     xhr.send();
+//     console.log(xhr.response);
+    
+//     return JSON.parse(xhr.response);
+
+// }
 
 const getDataFromJSON = () => {
     let data;
@@ -397,6 +472,7 @@ const getDataFromJSON = () => {
                 case "hk": data = zh_hk; break;
                 case "mo": data = zh_mo; break;
                 case "tw": data = zh_tw; break;
+                default: data = zh_cn; break;
             }
             break;
 
@@ -409,6 +485,7 @@ const getDataFromJSON = () => {
         default: data = en; break;
     }
     // let data = list;
+    // console.log(JSON.parse(data));
     return JSON.parse(data);
     // return data;
 }
@@ -443,11 +520,17 @@ const setBackColor = () => {
     // if (backColor.length == parseInt(localStorage.color) + 1) localStorage.removeItem("color");
 }
 
-const setCards = (codes) => {
+const setCards = () => {
 
     let name;
 
     setBackColor();
+
+    // document.querySelectorAll(".back .card").forEach((card, i) => {
+    //     if (i < numberOfCards){
+    //         card.style.background = backColors[i];
+    //     }
+    // });
 
     document.querySelectorAll('.card img').forEach((image, i) => {
         if (i < numberOfCards) {
@@ -499,15 +582,15 @@ const setCards = (codes) => {
 
 const localStorageCodes = () => {
 
-    let codes;
+    // let codes;
     let randomizedCodes;
     
     if (typeof(localStorage.codes) == "undefined") {
         // codes = countries.map(a => a.code);
-        codes = codes2;
+        codes = allCodes;
      
         randomizedCodes = codes.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
-        // randomizedCodes = codes2; // test
+        // randomizedCodes = allCodes; // test
 
 
         localStorage.codes = JSON.stringify(randomizedCodes);
@@ -522,9 +605,9 @@ const localStorageCodes = () => {
         // if (codes.length < numberOfCards){   //test
     
         // randomizedCodes = codes.concat(countries.map(a => a.code).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]));
-        // console.log("codes2: ", codes2);
+        // console.log("allCodes: ", allCodes);
         do{
-            randomizedCodes = codes2.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
+            randomizedCodes = allCodes.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
             // console.log("randomizedCodes: ", randomizedCodes);
         } while(randomizedCodes.slice(0, codes.length).some(r => codes.includes(r)));
 
@@ -544,8 +627,8 @@ const localStorageCodes = () => {
     // localStorage.codes = JSON.stringify(JSON.parse(localStorage.codes).slice(numberOfCards));  //test
 
 
-
-    codes = shuffleCodes(codes);  //no test
+    // console.log("localStorageCodes: ",codes);
+    codes = shuffleCodes();  //no test
 
     // console.log(codes);
 
@@ -623,7 +706,7 @@ const init = () => {
     
     codes = localStorageCodes(); 
 
-    setCards(codes);
+    setCards();
 
 
     // document.querySelectorAll('.card .country p').forEach(function(text){
@@ -645,19 +728,23 @@ const init = () => {
     // console.log("timeout");
     // }, 5000);
 
+    // initScreen();
+
 }
 
 
 window.onload = () => {
     document.fonts.ready.then(() => {
 
-        function preventDefault(e){
+        const preventDefault = (e) => {
             e.preventDefault();
         }
         
         document.body.addEventListener('touchmove', preventDefault, { passive: false });
         
         init();
+        // initScreen(); //test
+
         // setTimeout(1000, init);
     });
     

@@ -29,6 +29,7 @@
     --offset: -129px;
     --fontSize: 3.2vmin;
     --fontSizeBig: 8vmin;
+    --background: whitesmoke;
     /* --offset2: calc( 348 / 4 * 3 / (-2))px; */
 }
 
@@ -37,7 +38,8 @@ body{
     font-family: 'Liberation','Times New Roman', Times, serif;
     margin: 0px;
     /* opacity: 0; */
-    background: whitesmoke;
+    background: var(--background);
+    /* background: ivory; */
     position: absolute;
     top: 50%;
     left: 50%;
@@ -114,7 +116,8 @@ h1{
     display: flex;
     flex-direction: column;
 
-    background: snow;
+    /* background: snow; */
+    background: var(--background);
     /* background: gray; */
 
 
@@ -181,6 +184,7 @@ p{
 
 .back .card{
     background: var(--backColor);
+    /* background: Silver; */
 }
 
 #big1, #big2{
@@ -230,6 +234,21 @@ p{
     animation-direction: alternate-reverse;
 }
 
+.zoomX{
+    /* z-index: 100; */
+    animation-name: zoomingX;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 2;
+    /* animation-fill-mode: backwards; */
+    animation-fill-mode: forwards;
+
+                /* scaling 3s ease-in-out forwards , */
+               /* translating 3s ease-in-out; */
+               /* disapearing 3s linear forwards ; */
+    animation-direction: alternate-reverse;
+}
+
 @keyframes zooming {
     0% {
         opacity: 1; transform: translate(calc(var(--boardSize) / var(--minSide) * 3 / -2), calc(var(--boardSize) / var(--minSide) * 3 / -2)) scale(1.0);
@@ -250,6 +269,26 @@ p{
 
         
         
+    }
+
+}
+
+@keyframes zoomingX {
+    0% {
+        opacity: 1; transform: translate(calc(var(--boardSize) / var(--minSide) * 3 / -2), calc(var(--boardSize) / var(--minSide) * 3 / -2)) scale(1.0);
+    }
+    /* 10% {
+        opacity: 1; transform: translate(calc(var(--boardSize) / var(--minSide) * 3 / -2), calc(var(--boardSize) / var(--minSide) * 3 / -2)) scale(1.0);
+    } */
+
+    100% {
+        
+        /* opacity: 1; transform: translate(-195px, -320px) scale(0.33); */
+        /* opacity: 1; transform: translate(-291px, -389px) scale(0.33); */
+
+        /* opacity: 1; transform: translate(calc(((var(--boardSize) + (var(--minSide) - 1) * var(--gapSize)) / 2 + var(--boardSize) / var(--minSide) *  0) * -1 ), calc(((var(--boardSize) * var(--maxSide) / var(--minSide) + (var(--maxSide) - 1) * var(--gapSize)) / 2 + var(--boardSize) / var(--minSide) * 1) * -1)) scale(0.333333); */
+
+        opacity: 0; transform: translate(calc(((var(--boardSize) + (var(--minSide) - 1) * var(--gapSize)) / 2 - var(--offsetLeft) * var(--gapSize) + var(--boardSize) / var(--minSide) *  (1 - var(--offsetLeft))) * -1 ), calc(((var(--boardSize) * var(--maxSide) / var(--minSide) + (var(--maxSide) - 1) * var(--gapSize)) / 2 - var(--offsetTop) * var(--gapSize) + var(--boardSize) / var(--minSide) * (1 - var(--offsetTop))) * -1)) scale(0.333333);
     }
 
 }
@@ -294,6 +333,29 @@ p{
             /* opacity: 1; transform: translate(-291px, -389px) scale(0.33); */
 
             opacity: 0; transform: translate(calc(((var(--boardSize) * var(--maxSide) / var(--minSide) + (var(--maxSide) - 1) * var(--gapSize)) / 2 - var(--offsetLeft) * var(--gapSize) + var(--boardSize) / var(--minSide) * (1 - var(--offsetLeft))) * -1), calc(((var(--boardSize) + (var(--minSide) - 1) * var(--gapSize)) / 2 - var(--offsetTop) * var(--gapSize) + var(--boardSize) / var(--minSide) * (1 - var(--offsetTop))) * -1 )) scale(0.33333);
+    
+            /* calc(((var(--boardSize) + (var(--minSide) - 1) * var(--gapSize)) / 2 + var(--boardSize) / var(--minSide)) * -1);
+            calc(((var(--boardSize) * var(--maxSide) / var(--minSide) + (var(--maxSide) - 1) * var(--gapSize)) / 2 + var(--boardSize) / var(--minSide)) * -1); */
+
+            /* opacity: 1; transform: translate(calc(((var(--boardSize) + (var(--minSide) - 1) * var(--gapSize)) / 2 - var(--offsetTop) * 2px + var(--boardSize) / var(--minSide) *  (1 - var(--offsetTop))) * -1 ), calc(((var(--boardSize) * var(--maxSide) / var(--minSide) + (var(--maxSide) - 1) * var(--gapSize)) / 2 - var(--offsetLeft) * 2px + var(--boardSize) / var(--minSide) * (1 - var(--offsetLeft))) * -1)) scale(0.333333); */
+        }
+    
+    }
+
+    @keyframes zoomingX {
+        0% {
+            opacity: 1; transform: translate(calc(var(--boardSize) / var(--minSide) * 3 / -2), calc(var(--boardSize) / var(--minSide) * 3 / -2 + 15px)) scale(1.0);
+        }
+        /* 10% {
+            opacity: 1; transform: translate(calc(var(--boardSize) / var(--minSide) * 3 / -2), calc(var(--boardSize) / var(--minSide) * 3 / -2)) scale(1.0);
+        } */
+    
+        100% {
+            
+            /* opacity: 1; transform: translate(-195px, -320px) scale(0.33); */
+            /* opacity: 1; transform: translate(-291px, -389px) scale(0.33); */
+
+            opacity: 0; transform: translate(calc(((var(--boardSize) * var(--maxSide) / var(--minSide) + (var(--maxSide) - 1) * var(--gapSize)) / 2 - var(--offsetLeft) * var(--gapSize) + var(--boardSize) / var(--minSide) * (1 - var(--offsetLeft))) * -1), calc(((var(--boardSize) + (var(--minSide) - 1) * var(--gapSize)) / 2 - var(--offsetTop) * var(--gapSize) + var(--boardSize) / var(--minSide) * (1 - var(--offsetTop)) - 15px) * -1)) scale(0.33333);
     
             /* calc(((var(--boardSize) + (var(--minSide) - 1) * var(--gapSize)) / 2 + var(--boardSize) / var(--minSide)) * -1);
             calc(((var(--boardSize) * var(--maxSide) / var(--minSide) + (var(--maxSide) - 1) * var(--gapSize)) / 2 + var(--boardSize) / var(--minSide)) * -1); */
