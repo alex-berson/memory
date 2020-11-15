@@ -8,11 +8,9 @@
     -moz-transform: perspective(1000px);
     -moz-transform-style: preserve-3d; 
     -ms-transform-style: preserve-3d; 
-
 }
 
-/* START: Accommodating for IE */
-    .flip-container:hover .flip-container:active .front, .flip-container.hover .front, .flip-container.flip .front{
+.flip-container:hover .flip-container:active .front, .flip-container.hover .front, .flip-container.flip .front{
     -webkit-transform: rotateY(0deg);
     -moz-transform: rotateY(0deg);
     -o-transform: rotateY(0deg);
@@ -25,8 +23,7 @@
     -moz-transform: rotateY(180deg);
     -o-transform: rotateY(180deg);
     transform: rotateY(180deg);
-}
-/* END: Accommodating for IE */
+} 
 
 .flip-container, .front, .back {
     width: calc(var(--boardSize) / var(--minSide));
