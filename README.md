@@ -1,6 +1,6 @@
 # Memory (game)
 
-Find all the matching pairs of cards by turning over 2 cards at a time.<br>
+Find all the matching pairs of flags by turning over 2 cards at a time.<br>
 Learn more than 240 flags of all countries of the world and dependent territories.<br>
 
 ## Description

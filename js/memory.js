@@ -1,7 +1,7 @@
 let numberOfCards;
 let countries = [];
 let codes = [];
-const boardSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--boardSize'));
+const boardSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--board-size'));
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -15,20 +15,164 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+// const notWellShuffled = (shuffledCodes) => {
+
+
+//     const minSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--min-side'));
+//     const maxSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--max-side'));
+
+//     let line = [];
+
+//     // let vertLine = [];
+//     // let horizonLine =[];
+
+
+//         // for (let i = 0; i < minSide; i++){
+//         //     vertLine = [];
+//         //     horizonLine =[];
+//         //     for (let j = 0; j < maxSide; j++) {
+//         //         vertLine.push(shuffledCodes[i + j * minSide]);
+//         //         horizonLine.push(shuffledCodes[i * maxSide + j]);
+
+
+//         //     }
+
+//         //     if (new Set(vertLine).size !== vertLine.length || new Set(horizonLine).size !== horizonLine.length) {
+//         //         return true
+//         //     }
+//         // }
+
+//         // for (let i = 0; i < maxSide; i++){
+//         //     vertLine = [];
+//         //     horizonLine = [];
+//         //     for (let j = 0; j < minSide; j++) {
+
+//         //         horizonLine.push(shuffledCodes[i * minSide + j]);
+//         //         vertLine.push(shuffledCodes[i + j * maxSide]);
+    
+//         //     }
+
+//         //     if (new Set(horizonLine).size !== horizonLine.length || new Set(vertLine).size !== vertLine.length) {
+//         //         return true
+//         //     }
+//         // }
+
+
+    
+//     if (window.innerHeight > window.innerWidth) {
+
+//         for (let i = 0; i < minSide; i++){
+//             line = [];
+//             for (let j = 0; j < maxSide; j++) {
+//                 line.push(shuffledCodes[i + j * minSide])
+
+//             }
+
+//             if (new Set(line).size !== line.length) {
+//                 return true
+//             }
+//         }
+
+
+//         for (let i = 0; i < maxSide; i++){
+//             line = [];
+//             for (let j = 0; j < minSide; j++) {
+
+//                 line.push(shuffledCodes[i * minSide + j])
+    
+//             }
+
+//             if (new Set(line).size !== line.length) {
+//                 return true
+//             }
+//         }
+
+//         for (let i = 0; i < numberOfCards - minSide; i++) {
+//             if (shuffledCodes[i] == shuffledCodes[i + minSide - 1] || shuffledCodes[i] == shuffledCodes[i + minSide + 1]){
+//                 return true;
+//             }
+//         }
+
+//     } else {
+
+//         for (let i = 0; i < maxSide; i++){
+//             line = [];
+//             for (let j = 0; j < minSide; j++) {
+//                 line.push(shuffledCodes[i + j * maxSide])
+
+//             }
+
+//             if (new Set(line).size !== line.length) {
+//                 return true
+//             }
+//         }
+
+//         for (let i = 0; i < minSide; i++){
+//             line = [];
+//             for (let j = 0; j < maxSide; j++) {
+
+//                 line.push(shuffledCodes[i * maxSide + j])
+    
+//             }
+
+//             if (new Set(line).size !== line.length) {
+//                 return true
+//             }
+//         }
+
+//         for (let i = 0; i < numberOfCards - maxSide; i++) {
+//             if (shuffledCodes[i] == shuffledCodes[i + maxSide - 1] || shuffledCodes[i] == shuffledCodes[i + maxSide + 1]){
+//                 return true;
+//             }
+//         }
+
+//     }
+
+//     return false;
+//     // return shuffledCodes.some((code, index) => code == shuffledCodes[index + 1] || code == shuffledCodes[index + minSide] || code == shuffledCodes[index + maxSide]);
+// }
+
 const shuffleCodes = () => {
+
+    // let shuffledCodes;
+    // const minSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--min-side'));
+    // const maxSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--max-side'));
+
+    // let start = +new Date();
+
+
+
+
+    // do {
+        // shuffledCodes = codes.concat(codes).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
+
+    // } while(notWellShuffled(shuffledCodes));
+
+    // } while(shuffledCodes.some((code, index) => code == shuffledCodes[index + 1] || code == shuffledCodes[index + minSide] || code == shuffledCodes[index + maxSide]));
+
+// } while(shuffledCodes.some((code, index) => code == shuffledCodes[index + 1]));
+
+    // let end = +new Date();
+    // console.log(`Execution time: ${end - start} ms`);
+
+
+    // return shuffledCodes;
+
     return codes.concat(codes).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
-    // return codes.concat(codes)
+
+    // return codes.concat(codes);
 }
 
 const firework = () => {
-    const minSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--minSide'));
-    const maxSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--maxSide'));
 
-    let cardNumbers = Array.from({length: numberOfCards}, (_, i) => i).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
+    let zoomingDuration = 2000;
+
+    const minSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--min-side'));
+    const maxSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--max-side'));
 
     let big12 = 0;
-    let doubles = [];
     let bigCard;
+    let index;
 
     document.querySelectorAll(".flip-container").forEach((card) => {
         card.style.opacity = 0;
@@ -39,9 +183,17 @@ const firework = () => {
     document.querySelector(`#big2`).style.display = "flex";
     document.querySelector(`#big1`).style.display = "flex";
 
-    let i = 0;
     const zooming = () => {
-        if (i == codes.length){
+        
+        if (flipCard.guesedCards.length == 5) {
+            document.querySelector("#designed").style.opacity = 1;
+        }
+
+        if (flipCard.guesedCards.length == 2) {
+            document.querySelector("#designed").style.opacity = 0;
+        }
+
+        if (flipCard.guesedCards.length == 0) {
             clearInterval(zoomingInterval);
             setTimeout(() => {
                 document.querySelectorAll("#big1, #big2").forEach((card) => {
@@ -52,22 +204,27 @@ const firework = () => {
                         card.classList.remove("zoom");
                     }
                 });
-                init();}, 1000);
+                init();}, zoomingDuration / 2);
         } else {
+
+            index = codes.map((e, i) => e === flipCard.guesedCards[0] ? i : '').filter(String)[Math.round(Math.random())];
+     
             let offsetLeft, offsetTop;
 
-            window.innerHeight > window.innerWidth ? offsetLeft = (cardNumbers[i] + minSide) % minSide : offsetLeft = (cardNumbers[i] + maxSide) % maxSide;
-            window.innerHeight > window.innerWidth ? offsetTop = Math.floor(cardNumbers[i] / minSide) : offsetTop = Math.floor(cardNumbers[i] / maxSide);
+            window.innerHeight > window.innerWidth ? offsetLeft = (index + minSide) % minSide : offsetLeft = (index + maxSide) % maxSide;  //*
+            window.innerHeight > window.innerWidth ? offsetTop = Math.floor(index / minSide) : offsetTop = Math.floor(index / maxSide);  //*
 
-            document.documentElement.style.setProperty('--offsetLeft', offsetLeft);
-            document.documentElement.style.setProperty('--offsetTop', offsetTop);
+            document.documentElement.style.setProperty('--offset-left', offsetLeft);
+            document.documentElement.style.setProperty('--offset-top', offsetTop);
 
             bigCard = document.querySelector(`#big${big12 + 1} img`);
-            bigCard.src = `./images/flags/${codes[cardNumbers[i]]}.png`;
-            name  = countries.find(x => x.code === codes[cardNumbers[i]].toUpperCase()).name;
+
+            bigCard.src = `./images/flags/${codes[index]}.png`;    //*
+            name  = countries.find(x => x.code === codes[index].toUpperCase()).name;  //*
+
             bigCard.nextElementSibling.querySelector('p').innerHTML = name;
             bigCard.nextElementSibling.querySelector('p').style.fontSize = "";
-            let fontSizeBig = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fontSizeBig'));
+            let fontSizeBig = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size-big'));
             while (parseFloat(getComputedStyle(bigCard.nextElementSibling).getPropertyValue("width")) < parseFloat(getComputedStyle(bigCard.nextElementSibling.querySelector('p')).getPropertyValue("width"))) {
                 fontSizeBig -= 0.1;
                 bigCard.nextElementSibling.querySelector('p').style.fontSize = fontSizeBig + "vmin";
@@ -79,22 +236,19 @@ const firework = () => {
                 document.querySelector(`#big${big12 + 1}`).classList.add("zoom");
             }
 
-            doubles.push(codes[cardNumbers[i]]); 
+            flipCard.guesedCards.shift();
 
-            do {
-                i++;
-            } while (doubles.includes(codes[cardNumbers[i]]) && i < codes.length);
             big12 = 1 - big12;
 
             if (iPhoneXApp()) {
-                setTimeout(() => {document.querySelector(`#big${big12 + 1}`).classList.remove("zoomX");}, 2000);
+                setTimeout(() => {document.querySelector(`#big${big12 + 1}`).classList.remove("zoomX");}, zoomingDuration);
             } else {
-                setTimeout(() => {document.querySelector(`#big${big12 + 1}`).classList.remove("zoom");}, 2000);
+                setTimeout(() => {document.querySelector(`#big${big12 + 1}`).classList.remove("zoom");}, zoomingDuration);
             }
         }
     }
     zooming();
-    let  zoomingInterval = setInterval(zooming, 1100);
+    let  zoomingInterval = setInterval(zooming, zoomingDuration / 2 + 100);
 }
 
 const flipCard = (e) => {
@@ -109,6 +263,10 @@ const flipCard = (e) => {
 
     if( typeof flipCard.turnedCards == 'undefined' ) {
         flipCard.turnedCards = [];
+    }
+
+    if( typeof flipCard.guesedCards == 'undefined' || flipCard.winPairs == 0) {
+        flipCard.guesedCards = [];
     }
 
     if (getComputedStyle(e.currentTarget).getPropertyValue("opacity") == 0) return;
@@ -134,13 +292,18 @@ const flipCard = (e) => {
 
             flipCard.numberOfTurnedCards = 0;
 
+            const name = flipCard.turnedCards[0].querySelector("p").innerHTML;
+            flipCard.guesedCards[flipCard.guesedCards.length] = countries.find(x => x.name === name).code.toLowerCase();
+
+
+
             document.querySelectorAll(`#${flipCard.turnedCards[0].id}, #${flipCard.turnedCards[1].id}`).forEach((card) => {
                 if (matchMedia('(hover: none)').matches){
                     card.removeEventListener("touchstart", flipCard);
                 } else {
-                    card.removeEventListener("click", flipCard);
+                    card.removeEventListener("mousedown", flipCard);
                 }
-                card.style.transition = 'opacity 2s linear';
+                card.style.transition = 'opacity 2s linear 0.6s';
             });
 
             document.querySelectorAll(`#${flipCard.turnedCards[0].id}, #${flipCard.turnedCards[1].id}`).forEach((card) => {
@@ -152,8 +315,11 @@ const flipCard = (e) => {
             if (flipCard.winPairs == numberOfCards/2) {
                 flipCard.winPairs = 0;
                 localStorage.codes = JSON.stringify(JSON.parse(localStorage.codes).slice(numberOfCards/2));
-                setTimeout(() => {firework();}, 2000);
+                backColors.push(backColors.shift());
+                localStorage.colors = JSON.stringify(backColors);
 
+                setTimeout(() => {
+                    firework();}, 2600);
             }
         } else {
             autoTurn  = setTimeout(() => {document.querySelectorAll(`#${flipCard.turnedCards[0].id},#${flipCard.turnedCards[1].id}`).forEach((card) => {
@@ -169,10 +335,12 @@ const setEventListeners = () => {
 
                 card.addEventListener("touchstart", flipCard);
             } else {
-                card.addEventListener("click", flipCard);
+                card.addEventListener("mousedown", flipCard);
             }
     });
-    window.addEventListener("resize", setTheBoard);
+    if (!iPhoneXApp()) {
+        window.addEventListener("resize", setTheBoard);
+    } 
 } 
 
 const setNumberOfCards = () => {
@@ -181,15 +349,15 @@ const setNumberOfCards = () => {
         if (screen.width/screen.height > 0.5 && screen.height/screen.width < 2){
             if (window.navigator.standalone || (document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1)) {
                 numberOfCards = 28;
-                document.documentElement.style.setProperty('--minSide', 4);
-                document.documentElement.style.setProperty('--maxSide', 7);
+                document.documentElement.style.setProperty('--min-side', 4);
+                document.documentElement.style.setProperty('--max-side', 7);
                 document.querySelectorAll("#card29, #card30, #card31, #card32").forEach((card) => {
                     card.style.display = "none";
                 });
             } else {
                 numberOfCards = 24;
-                document.documentElement.style.setProperty('--minSide', 4);
-                document.documentElement.style.setProperty('--maxSide', 6);
+                document.documentElement.style.setProperty('--min-side', 4);
+                document.documentElement.style.setProperty('--max-side', 6);
                 document.querySelectorAll("#card25, #card26, #card27, #card28, #card29, #card30, #card31, #card32").forEach((card) => {
                     card.style.display = "none";
                 });
@@ -197,13 +365,13 @@ const setNumberOfCards = () => {
         } else {
             if (window.navigator.standalone || (document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1)) {
                 numberOfCards = 32;
-                document.documentElement.style.setProperty('--minSide', 4);
-                document.documentElement.style.setProperty('--maxSide', 8);
+                document.documentElement.style.setProperty('--min-side', 4);
+                document.documentElement.style.setProperty('--max-side', 8);
             } else {
 
                 numberOfCards = 28;
-                document.documentElement.style.setProperty('--minSide', 4);
-                document.documentElement.style.setProperty('--maxSide', 7);
+                document.documentElement.style.setProperty('--min-side', 4);
+                document.documentElement.style.setProperty('--max-side', 7);
                 document.querySelectorAll("#card29, #card30, #card31, #card32").forEach((card) => {
                     card.style.display = "none";
                 });
@@ -228,17 +396,20 @@ const iPhoneXApp = () => {
 
 const setTheBoard = () => {
 
-    const minSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--minSide'));
+    const minSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--min-side'));
 
     if (window.innerHeight > window.innerWidth) {
-        document.documentElement.style.setProperty('--boardSize', Math.ceil(window.innerWidth * boardSize / (minSide)) * minSide + 'px');
+        document.documentElement.style.setProperty('--board-size', Math.ceil(window.innerWidth * boardSize / (minSide)) * minSide + 'px');
     } else {
-        document.documentElement.style.setProperty('--boardSize', Math.ceil(window.innerHeight * boardSize / (minSide)) * minSide + 'px');
+        if (iPhoneXApp()) {
+            document.documentElement.style.setProperty('--board-size', Math.ceil(window.outerHeight * boardSize / (minSide)) * minSide + 'px');
+        } else {
+            document.documentElement.style.setProperty('--board-size', Math.ceil(window.innerHeight * boardSize / (minSide)) * minSide + 'px');            
+        }
     }
 
     if (iPhoneXApp()) {
-
-            document.querySelector(".board").style.marginBottom = "-15px";
+        document.documentElement.style.setProperty('--adjustment-x', '-20px');
     } 
 }
 
@@ -361,16 +532,17 @@ const setBackColor = () => {
         localStorage.colors = JSON.stringify(backColors);
     } else {
         backColors = JSON.parse(localStorage.colors);
-        backColors.push(backColors.shift());
-        localStorage.colors = JSON.stringify(backColors);
     }
     
-    document.documentElement.style.setProperty('--backColor', backColors[0]);
+    document.documentElement.style.setProperty('--back-color', backColors[0]);
 }
 
 const setCards = () => {
 
     let name;
+
+    countries = getDataFromJSON();
+    codes = localStorageCodes(); 
 
     setBackColor();
 
@@ -383,13 +555,13 @@ const setCards = () => {
             image.nextElementSibling.querySelector('p').style.fontSize = "";
             image.nextElementSibling.querySelector('p').innerHTML = name;
 
-            let fontSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fontSize'));
+            let fontSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size'));
 
             while (parseFloat(getComputedStyle(image.nextElementSibling).getPropertyValue("height")) < parseFloat(getComputedStyle(image.nextElementSibling.firstElementChild).getPropertyValue("height"))) {
                 fontSize -= 0.1;
                 image.nextElementSibling.firstElementChild.style.fontSize = fontSize + "vmin";
             }
-            if (fontSize < parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fontSize'))){
+            if (fontSize < parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size'))){
                 fontSize -= 0.1;
                 image.nextElementSibling.firstElementChild.style.fontSize = fontSize + "vmin";
             }
@@ -412,6 +584,7 @@ const localStorageCodes = () => {
         randomizedCodes = codes.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
 
         localStorage.codes = JSON.stringify(randomizedCodes);
+
     } 
  
     codes = JSON.parse(localStorage.codes).slice(0, numberOfCards/2);
@@ -425,6 +598,7 @@ const localStorageCodes = () => {
         localStorage.codes = JSON.stringify(randomizedCodes);
         
         codes = JSON.parse(localStorage.codes).slice(0, numberOfCards/2);
+
     }
 
     codes = shuffleCodes(); 
@@ -435,12 +609,13 @@ const localStorageCodes = () => {
 const showUp = () => {
 
     let delays = Array.from({length: numberOfCards}, (_, i) => i/7);
+
     delays = delays.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
     document.querySelectorAll(".flip-container").forEach((card, i) => {
-        if (i < numberOfCards){
             card.style.transition = `opacity 0s linear ${delays[i]}s`; 
-            card.style.opacity = 1;
-        }
+    });   
+    document.querySelectorAll(".flip-container").forEach((card) => {
+            card.style.opacity = 1;    
     });               
 }
 
@@ -451,27 +626,22 @@ const init = () => {
     setNumberOfCards();
 
     setTheBoard();
-   
-    countries = getDataFromJSON();
-    
-    codes = localStorageCodes(); 
 
     setCards();
     
     showUp();
+
+   
 }
 
 window.onload = () => {
     document.fonts.ready.then(() => {
 
-        const preventDefault = (e) => {
-            e.preventDefault();
-        }
+        const preventDefault = (e) => e.preventDefault();
         
         document.body.addEventListener('touchmove', preventDefault, { passive: false });
         
-        init();
- 
+        init(); 
     });
 }
 
