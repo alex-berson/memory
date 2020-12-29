@@ -163,6 +163,10 @@ p{
         margin-bottom: var(--adjustment-x);
     }
 
+    #designed{
+        margin-bottom: var(--adjustment-x);
+    }
+
     @keyframes zooming {
         0% {
             opacity: 0; transform: translate(calc(((var(--board-size) * var(--max-side) / var(--min-side) + (var(--max-side) - 1) * var(--gap-size)) / 2 - var(--offset-left) * var(--gap-size) + var(--board-size) / var(--min-side) * (1 - var(--offset-left))) * -1), calc(((var(--board-size) + (var(--min-side) - 1) * var(--gap-size)) / 2 - var(--offset-top) * var(--gap-size) + var(--board-size) / var(--min-side) * (1 - var(--offset-top))) * -1 )) scale(0.33333);
@@ -175,11 +179,11 @@ p{
 
     @keyframes zoomingX {
         0% {
-            opacity: 0; transform: translate(calc(((var(--board-size) * var(--max-side) / var(--min-side) + (var(--max-side) - 1) * var(--gap-size)) / 2 - var(--offset-left) * var(--gap-size) + var(--board-size) / var(--min-side) * (1 - var(--offset-left))) * -1), calc(((var(--board-size) + (var(--min-side) - 1) * var(--gap-size)) / 2 - var(--offset-top) * var(--gap-size) + var(--board-size) / var(--min-side) * (1 - var(--offset-top)) - var(--adjustment-x)) * -1)) scale(0.33333);
+            opacity: 0; transform: translate(calc(((var(--board-size) * var(--max-side) / var(--min-side) + (var(--max-side) - 1) * var(--gap-size)) / 2 - var(--offset-left) * var(--gap-size) + var(--board-size) / var(--min-side) * (1 - var(--offset-left))) * -1), calc(((var(--board-size) + (var(--min-side) - 1) * var(--gap-size)) / 2 - var(--offset-top) * var(--gap-size) + var(--board-size) / var(--min-side) * (1 - var(--offset-top)) - 20px) * -1)) scale(0.33333);
         }
 
         100% {
-            opacity: 1; transform: translate(calc(var(--board-size) / var(--min-side) * 3 / -2), calc(var(--board-size) / var(--min-side) * 3 / -2 + var(--adjustment-x))) scale(1.0);
+            opacity: 1; transform: translate(calc(var(--board-size) / var(--min-side) * 3 / -2), calc(var(--board-size) / var(--min-side) * 3 / -2 + 20px)) scale(1.0);
         }
     }
 }
@@ -195,7 +199,7 @@ p{
     }
 
     #big1, #big2{
-        font-size: var(--font-size-big);;
+        font-size: var(--font-size-big);
     }
 }
 
