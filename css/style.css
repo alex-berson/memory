@@ -65,6 +65,7 @@ img{
     width: calc(var(--board-size) / var(--min-side));
     height: calc((var(--board-size) / var(--min-side)) * 2 / 3);
     border-radius: 6px;
+    pointer-events: none;
 }
 
 .country{

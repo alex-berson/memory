@@ -379,7 +379,7 @@ const getDataFromJSON = () => {
         case "sr": navigator.language.slice(3, 5) == "rs" ? data = sr_rs : data = sr_latn; break;
         case "bs": navigator.language.slice(3, 5) == "ba" ? data = bs_ba : data = bs_cyrl; break;
 
-        default: data = en; break;
+        default:data = zh_cn; break;        
     }
     return JSON.parse(data);
 }
@@ -447,16 +447,17 @@ const localStorageCodes = () => {
  
     codes = JSON.parse(localStorage.codes).slice(0, numberOfCards/2);
 
+    console.log(codes);
+
     if (codes.length < numberOfCards/2){
         do{
             randomizedCodes = allCodes.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
-        } while(randomizedCodes.slice(0, codes.length).some(r => codes.includes(r)));
+        } while(randomizedCodes.slice(0, numberOfCards/2 - codes.length).some(r => codes.includes(r)));
 
         randomizedCodes = codes.concat(randomizedCodes);
         localStorage.codes = JSON.stringify(randomizedCodes);
         
         codes = JSON.parse(localStorage.codes).slice(0, numberOfCards/2);
-
     }
 
     codes = shuffleCodes(); 
@@ -497,7 +498,7 @@ window.onload = () => {
 
         const preventDefault = (e) => e.preventDefault();
         
-        document.body.addEventListener('touchmove', preventDefault, { passive: false });
+        document.body.addEventListener('touchstart', preventDefault, { passive: false });
         
         init(); 
     });

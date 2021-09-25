@@ -1,8 +1,8 @@
-# Memory (game)
+# Memory
 
 Find all the matching pairs of flags by turning over 2 cards at a time.<br>
 Learn more than 240 flags of all countries of the world and dependent territories.<br>
-You can play [Memory game online](https://alex-berson.github.io/memory/) or <br>
+You can play [Memory Game online](https://alex-berson.github.io/memory/) or <br>
 [<img src="images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg">](https://apps.apple.com/us/app/memory/id1539117269)
 
 ## Description
@@ -17,4 +17,4 @@ You can play [Memory game online](https://alex-berson.github.io/memory/) or <br>
 
 ## License
 
-Copyright &copy; 2020 Alexander Berson. This project is licensed under the [MIT license](LICENSE.txt "MIT License").
+Copyright &copy; 2020-2021 Alexander Berson. This project is licensed under the [MIT license](LICENSE.txt "MIT License").
