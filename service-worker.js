@@ -1,13 +1,10 @@
-const cacheName = 'cache-v1';
+const cacheName = 'cache-v3';
 const files = [
-  'https://alex-berson.github.io/memory/',
+  '/',
   'index.html',
   'css/style.css',
-  'css/flip.css',
-
   'js/memory.js',
   'js/data.js',
-
   'json/af.json',
   'json/am.json',
   'json/ar.json',
@@ -104,7 +101,6 @@ const files = [
   'json/zh-hk.json',
   'json/zh-mo.json',
   'json/zh-tw.json',
-
   'images/flags/ad.png',
   'images/flags/ae.png',
   'images/flags/af.png',
@@ -343,14 +339,13 @@ const files = [
   'images/flags/vu.png',
   'images/flags/wf.png',
   'images/flags/ws.png',
+  'images/flags/xk.png',
   'images/flags/ye.png',
   'images/flags/yt.png',
   'images/flags/za.png',
   'images/flags/zm.png',
   'images/flags/zw.png',
-
-  'fonts/LiberationSerif-Regular-webfont.woff',
-  'fonts/LiberationSerif-Bold-webfont.woff'
+  'fonts/LiberationSerif-Regular.ttf',
 ];
 
 self.addEventListener('install', event => {
@@ -381,11 +376,3 @@ self.addEventListener('fetch', event => {
     })
   );
 });
-
-//self.addEventListener('fetch', event => {
-//  event.respondWith(caches.match(event.request)
-//    .then(response => {
-//      return response || fetch(event.request);
-//    })
-//  );
-//});

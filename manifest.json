@@ -3,8 +3,6 @@
    "short_name": "Memory",
    "start_url": "index.html",
    "display": "standalone",
-   "background_color": "#5f9ea0",
-   "theme_color": "#5f9ea0",
    "icons": [{
       "src": "images/icons/android-chrome-192x192.png",
       "sizes": "192x192",

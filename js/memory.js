@@ -1,506 +1,359 @@
-let numberOfCards;
+let numCards;
 let countries = [];
 let codes = [];
-const boardSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--board-size'));
 
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(reg => {
-          console.log('Service worker registered!', reg);
-        })
-        .catch(err => {
-          console.log('Service worker registration failed: ', err);
-        });
-    });
-}
+const shuffle = (array) => {
 
-const shuffleCodes = () => {
+    for (let i = array.length - 1; i > 0; i--) {
 
-    return codes.concat(codes).map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
-    // return codes.concat(codes);
+        let j = Math.trunc(Math.random() * (i + 1));
+
+        [array[i], array[j]] = [array[j], array[i]]; 
+    }
+
+    return array;
 }
 
 const firework = () => {
 
-    let zoomingDuration = 2000;
+    let n = 0;
+    let bigCards = [...document.querySelectorAll('.bigcard')];
+    let cards = [...document.querySelectorAll('.card-wrap')];
+    let designed = document.querySelector('.designed');
+    let minSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--min-side'));
+    let maxSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--max-side'));
+    let fontSizeOrig = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size-big'));
+    let cardWrap = document.querySelector('.bigcards-wrap');
+    
+    cardWrap.classList.add('display');
 
-    const minSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--min-side'));
-    const maxSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--max-side'));
-
-    let big12 = 0;
-    let bigCard;
-    let index;
-
-    document.querySelectorAll(".flip-container").forEach((card) => {
-        card.style.opacity = 0;
-        card.classList.toggle("flip");
-        card.style.transition = "";
+    cards.forEach(card => {
+        card.classList.remove('flip');
+        card.querySelector('p').removeAttribute('style');
     });
 
-    document.querySelector(`#big2`).style.display = "flex";
-    document.querySelector(`#big1`).style.display = "flex";
+    const zoom = () => {
 
-    const zooming = () => {
+        let i = numCards / 2 - bigCards.length;
+        let bigCard = bigCards.shift();
+        let card = document.querySelector(`[data-n="${i + 1}"]`);
+        let index = cards.indexOf(card);
+        let [numR, numC] = window.innerHeight > window.innerWidth ? [maxSide, minSide] : [minSide, maxSide];
+        let [r, c] = [Math.trunc(index / numC), index % numC];
+        let [r0, c0] = [numR / 2, numC / 2];
+        let offX = Number.isInteger(c0) ? 75 + (c - c0) * 50 : 50 + (c - Math.trunc(c0)) * 50;
+        let offY = Number.isInteger(r0) ? 75 + (r - r0) * 50 : 50 + (r - Math.trunc(r0)) * 50;
+        let fontSize = fontSizeOrig;
+
+        if (numCards / 2 - i == 6) designed.classList.add('show-designed');
+        if (numCards / 2 - i == 3) designed.classList.remove('show-designed');
         
-        if (flipCard.guesedCards.length == 5) {
-            document.querySelector("#designed").style.opacity = 1;
+        bigCard.style.transformOrigin = `${offX}% ${offY}%`;
+        bigCard.querySelector('img').src = card.querySelector('img').src;
+        bigCard.querySelector('p').innerText = card.querySelector('p').innerText;
+
+        while (parseFloat(getComputedStyle(bigCard.querySelector('.country')).getPropertyValue('width')) < parseFloat(getComputedStyle(bigCard.querySelector('p')).getPropertyValue('width'))) {
+            fontSize -= 0.1;
+            bigCard.querySelector('p').style.fontSize = fontSize + 'vmin';
         }
 
-        if (flipCard.guesedCards.length == 2) {
-            document.querySelector("#designed").style.opacity = 0;
-        }
+        bigCard.classList.add('zoom-in');
 
-        if (flipCard.guesedCards.length == 0) {
-            clearInterval(zoomingInterval);
-            setTimeout(() => {
-                document.querySelectorAll("#big1, #big2").forEach((card) => {
-                    card.style.display = "none";
-                    if (iPhoneXApp()) {
-                        card.classList.remove("zoomX");
-                    } else {
-                        card.classList.remove("zoom");
-                    }
-                });
-                init();}, zoomingDuration / 2);
-        } else {
+        bigCard.addEventListener('animationend', (e) => {
 
-            index = codes.map((e, i) => e === flipCard.guesedCards[0] ? i : '').filter(String)[Math.round(Math.random())];
-     
-            let offsetLeft, offsetTop;
+            let card = e.currentTarget;
 
-            window.innerHeight > window.innerWidth ? offsetLeft = (index + minSide) % minSide : offsetLeft = (index + maxSide) % maxSide;  //*
-            window.innerHeight > window.innerWidth ? offsetTop = Math.floor(index / minSide) : offsetTop = Math.floor(index / maxSide);  //*
+            card.classList.remove('zoom-in');
+            card.classList.add('zoom-out');
 
-            document.documentElement.style.setProperty('--offset-left', offsetLeft);
-            document.documentElement.style.setProperty('--offset-top', offsetTop);
+            card.addEventListener('animationend', (e) => {
 
-            bigCard = document.querySelector(`#big${big12 + 1} img`);
+                let card = e.currentTarget;
 
-            bigCard.src = `./images/flags/${codes[index]}.png`;    //*
-            name  = countries.find(x => x.code === codes[index].toUpperCase()).name;  //*
+                n++;
 
-            bigCard.nextElementSibling.querySelector('p').innerHTML = name;
-            bigCard.nextElementSibling.querySelector('p').style.fontSize = "";
-            let fontSizeBig = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size-big'));
-            while (parseFloat(getComputedStyle(bigCard.nextElementSibling).getPropertyValue("width")) < parseFloat(getComputedStyle(bigCard.nextElementSibling.querySelector('p')).getPropertyValue("width"))) {
-                fontSizeBig -= 0.1;
-                bigCard.nextElementSibling.querySelector('p').style.fontSize = fontSizeBig + "vmin";
-            }
+                card.removeAttribute('style');
+                card.classList.remove('zoom-out');
+                card.querySelector('p').removeAttribute('style');
 
-            if (iPhoneXApp()) {
-                document.querySelector(`#big${big12 + 1}`).classList.add("zoomX");
-            } else {
-                document.querySelector(`#big${big12 + 1}`).classList.add("zoom");
-            }
+                if (n >= numCards / 2) {
+                    cardWrap.classList.remove('display');
+                    newGame();
+                }
 
-            flipCard.guesedCards.shift();
+            }, {once: true});
 
-            big12 = 1 - big12;
+            if (bigCards.length > 0) zoom();
 
-            if (iPhoneXApp()) {
-                setTimeout(() => {document.querySelector(`#big${big12 + 1}`).classList.remove("zoomX");}, zoomingDuration);
-            } else {
-                setTimeout(() => {document.querySelector(`#big${big12 + 1}`).classList.remove("zoom");}, zoomingDuration);
-            }
-        }
+        }, {once: true});
     }
-    zooming();
-    let  zoomingInterval = setInterval(zooming, zoomingDuration / 2 + 100);
+
+    zoom();
+}
+
+const newGame = () => {
+
+    setCards();
+    enableCards();    
+    setTimeout(showCards, 500);
 }
 
 const flipCard = (e) => {
 
-    if( typeof flipCard.numberOfTurnedCards == 'undefined' ) {
-        flipCard.numberOfTurnedCards = 0;
+    let card = e.currentTarget;
+    let turned = [...document.querySelectorAll('.flip.visible')];
+    let numTurned = turned.length;
+
+    if (getComputedStyle(card).getPropertyValue('opacity') == 0) return;
+    if (numTurned == 1 && card.classList.contains('flip')) return;
+
+    if (numTurned == 2) {
+
+        clearTimeout(flipCard.autoTurn);
+        turned.forEach(card => card.classList.remove('flip'));
+
+        numTurned = 0;
     }
 
-    if( typeof flipCard.winPairs == 'undefined' ) {
-        flipCard.winPairs = 0;
+    card.classList.add('flip');
+
+    if (numTurned == 0) return; 
+
+    turned.push(card);
+
+    if (turned[0].querySelector('p').innerText != turned[1].querySelector('p').innerText) {
+
+        flipCard.autoTurn = setTimeout(() => turned.forEach(card => card.classList.remove('flip')), 700);
+
+        return;
     }
 
-    if( typeof flipCard.turnedCards == 'undefined' ) {
-        flipCard.turnedCards = [];
-    }
+    let n = document.querySelectorAll('.flip').length / 2;
 
-    if( typeof flipCard.guesedCards == 'undefined' || flipCard.winPairs == 0) {
-        flipCard.guesedCards = [];
-    }
+    turned[Math.round(Math.random())].dataset.n = n;
 
-    if (getComputedStyle(e.currentTarget).getPropertyValue("opacity") == 0) return;
-
-    if (flipCard.numberOfTurnedCards == 1 && e.currentTarget.id == flipCard.turnedCards[0].id) {return;}
-
-    if (flipCard.numberOfTurnedCards == 2){
-        clearTimeout(autoTurn);
-        flipCard.numberOfTurnedCards = 0;
-            document.querySelectorAll(`#${flipCard.turnedCards[0].id},#${flipCard.turnedCards[1].id}`).forEach((card) => {
-                card.classList.toggle("flip");
-            });
-    }
-
-    flipCard.turnedCards[flipCard.numberOfTurnedCards] = e.currentTarget;
-
-    e.currentTarget.classList.toggle("flip");
-
-    flipCard.numberOfTurnedCards++;
-  
-    if (flipCard.numberOfTurnedCards == 2){
-        if (flipCard.turnedCards[0].querySelector("p").innerHTML == flipCard.turnedCards[1].querySelector("p").innerHTML){
-
-            flipCard.numberOfTurnedCards = 0;
-
-            const name = flipCard.turnedCards[0].querySelector("p").innerHTML;
-            flipCard.guesedCards[flipCard.guesedCards.length] = countries.find(x => x.name === name).code.toLowerCase();
-
-
-
-            document.querySelectorAll(`#${flipCard.turnedCards[0].id}, #${flipCard.turnedCards[1].id}`).forEach((card) => {
-                if (matchMedia('(hover: none)').matches){
-                    card.removeEventListener("touchstart", flipCard);
-                } else {
-                    card.removeEventListener("mousedown", flipCard);
-                }
-                card.style.transition = 'opacity 2s linear 0.6s';
-            });
-
-            document.querySelectorAll(`#${flipCard.turnedCards[0].id}, #${flipCard.turnedCards[1].id}`).forEach((card) => {
-                card.style.opacity = 0;
-            });
-
-            flipCard.winPairs++;
-
-            if (flipCard.winPairs == numberOfCards/2) {
-                flipCard.winPairs = 0;
-                localStorage.codes = JSON.stringify(JSON.parse(localStorage.codes).slice(numberOfCards/2));
-                backColors.push(backColors.shift());
-                localStorage.colors = JSON.stringify(backColors);
-
-                setTimeout(() => {
-                    firework();}, 2600);
-            }
-        } else {
-            autoTurn  = setTimeout(() => {document.querySelectorAll(`#${flipCard.turnedCards[0].id},#${flipCard.turnedCards[1].id}`).forEach((card) => {
-                card.classList.toggle("flip"); });
-                flipCard.numberOfTurnedCards = 0;}, 700);
-        }
-    }
-}
-
-const setEventListeners = () => {
-    document.querySelectorAll('.flip-container').forEach((card) => {
-            if (matchMedia('(hover: none)').matches){
-
-                card.addEventListener("touchstart", flipCard);
-            } else {
-                card.addEventListener("mousedown", flipCard);
-            }
+    turned.forEach(card => {
+        disableCard(card);
+        card.style.transition = 'opacity 2s linear 0.6s';
+        card.classList.remove('visible');    
     });
-    if (!iPhoneXApp()) {
-        window.addEventListener("resize", setTheBoard);
-    } 
-} 
 
-const setNumberOfCards = () => {
+    if (document.querySelectorAll('.visible').length == 0) {
+
+        localStorage.codes = JSON.stringify(JSON.parse(localStorage.codes).slice(numCards/2));
+        localStorage.colors = JSON.stringify(JSON.parse(localStorage.colors).slice(1));
+        
+        turned[1].addEventListener('transitionend', e => {
+
+            let card = e.currentTarget;
+
+            card.addEventListener('transitionend', () => setTimeout(firework, 300), {once: true});
+                        
+        }, {once: true});
+    }
+}
+
+const setBoardSize = () => {
+
+    let boardSize = 0.92;
+    let minSide = 5;
+    let maxSide = 6;
+    let minSize = window.innerHeight > window.innerWidth ? window.innerWidth : window.innerHeight;
+
+    if (screen.width < 460 || screen.height < 460) {
+
+        minSide = 4;
+        maxSide = (screen.width / screen.height > 0.5) ? 6 : 7;
+
+        if (window.navigator.standalone || document.URL.indexOf('http://') == -1 && document.URL.indexOf('https://') == -1) {
+            maxSide += 1;
+        }
+    }
     
-    if(screen.width < 460 || screen.height < 460){
-        if (screen.width/screen.height > 0.5 && screen.height/screen.width < 2){
-            if (window.navigator.standalone || (document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1)) {
-                numberOfCards = 28;
-                document.documentElement.style.setProperty('--min-side', 4);
-                document.documentElement.style.setProperty('--max-side', 7);
-                document.querySelectorAll("#card29, #card30, #card31, #card32").forEach((card) => {
-                    card.style.display = "none";
-                });
-            } else {
-                numberOfCards = 24;
-                document.documentElement.style.setProperty('--min-side', 4);
-                document.documentElement.style.setProperty('--max-side', 6);
-                document.querySelectorAll("#card25, #card26, #card27, #card28, #card29, #card30, #card31, #card32").forEach((card) => {
-                    card.style.display = "none";
-                });
-            }
-        } else {
-            if (window.navigator.standalone || (document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1)) {
-                numberOfCards = 32;
-                document.documentElement.style.setProperty('--min-side', 4);
-                document.documentElement.style.setProperty('--max-side', 8);
-            } else {
+    numCards = minSide * maxSide;
 
-                numberOfCards = 28;
-                document.documentElement.style.setProperty('--min-side', 4);
-                document.documentElement.style.setProperty('--max-side', 7);
-                document.querySelectorAll("#card29, #card30, #card31, #card32").forEach((card) => {
-                    card.style.display = "none";
-                });
-            }    
-        }
-    } else {
-         numberOfCards = 30;
-         document.querySelectorAll("#card31, #card32").forEach((card) => {
-            card.style.display = "none";
-        });
-    }
+    document.documentElement.style.setProperty('--min-side', minSide);
+    document.documentElement.style.setProperty('--max-side', maxSide);
+    document.documentElement.style.setProperty('--board-size', Math.ceil(minSize * boardSize / minSide) * minSide + 'px');
 }
 
-const iPhoneXApp = () => {
-    if ((document.URL.indexOf('http://') == -1 && document.URL.indexOf('https://') == -1) && 
-        (screen.width < 460 || screen.height < 460) && 
-        (screen.width/screen.height < 0.5 && screen.height/screen.width > 2)) {
-            return true;
-    } 
-    return false;
-}
+const countryData = () => {
 
-const setTheBoard = () => {
+    let lang = navigator.language.slice(0, 2).toLowerCase();
+    let langs = {
+        en, ru, de, fr, es, it, pt, nl, sv, da, nb, fi, ca, el, hr, cs, 
+        he, ar, hi, hu, id, ja, ko, ms, pl, ro, sk, th, tr, uk, vi, be, 
+        lv, lt, et, bg, sl, hy, ka, az, kk, uz, ky, tg, tk, tt, af, sq, 
+        is, am, as, eu, bn, br, my, ce, dz, fo, gl, gu, ha, ga, jv, kn, 
+        ks, km, lb, lo, mk, ml, mt, mr, mn, ne, nn, or, pa, fa, sd, gd, 
+        si, sw, ta, te, ti, ug, ur, cy
+    };
+        
+    if (lang == 'zh') {
 
-    const minSide = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--min-side'));
+        let regions = {cn: zh_cn, hk: zh_hk, mo: zh_mo, tw: zh_tw};
+        let data = regions[navigator.language.slice(3, 5).toLowerCase()] || zh_cn;
 
-    if (window.innerHeight > window.innerWidth) {
-        document.documentElement.style.setProperty('--board-size', Math.ceil(window.innerWidth * boardSize / (minSide)) * minSide + 'px');
-    } else {
-        if (iPhoneXApp()) {
-            document.documentElement.style.setProperty('--board-size', Math.ceil(window.outerHeight * boardSize / (minSide)) * minSide + 'px');
-        } else {
-            document.documentElement.style.setProperty('--board-size', Math.ceil(window.innerHeight * boardSize / (minSide)) * minSide + 'px');            
-        }
+        return JSON.parse(data);
     }
 
-    if (iPhoneXApp()) {
-        document.documentElement.style.setProperty('--adjustment-x', '-20px');
-    } 
-}
+    if (lang == 'sr') {
 
-const getDataFromJSON = () => {
+        let regions = {rs: sr_rs, la: sr_latn};
+        let data = regions[navigator.language.slice(3, 5).toLowerCase()] || sr_rs;
 
-    let data;
-
-    switch(navigator.language.slice(0, 2)){
-        case "en": data = en; break;        
-        case "ru": data = ru; break;
-        case "de": data = de; break;
-        case "fr": data = fr; break;
-        case "es": data = es; break;
-        case "it": data = it; break;
-        case "pt": data = pt; break;
-        case "nl": data = nl; break;
-        case "sv": data = sv; break;
-        case "da": data = da; break;
-        case "nb": data = nb; break;
-        case "fi": data = fi; break;
-        case "ca": data = ca; break;
-        case "el": data = el; break;
-        case "hr": data = hr; break;
-        case "cs": data = cs; break;
-        case "he": data = he; break;
-        case "ar": data = ar; break;
-        case "hi": data = hi; break;
-        case "hu": data = hu; break;
-        case "id": data = id; break;
-        case "ja": data = ja; break;
-        case "ko": data = ko; break;
-        case "ms": data = ms; break;
-        case "pl": data = pl; break;
-        case "ro": data = ro; break;
-        case "sk": data = sk; break;
-        case "th": data = th; break;
-        case "tr": data = tr; break;
-        case "uk": data = uk; break;
-        case "vi": data = vi; break;
-        case "be": data = be; break;
-        case "lv": data = lv; break;
-        case "lt": data = lt; break;
-        case "et": data = et; break;
-        case "bg": data = bg; break;
-        case "sl": data = sl; break;
-        case "hy": data = hy; break;
-        case "ka": data = ka; break;
-        case "az": data = az; break;
-        case "kk": data = kk; break;
-        case "uz": data = uz; break;
-        case "ky": data = ky; break;
-        case "tg": data = tg; break;
-        case "tk": data = tk; break;
-        case "tt": data = tt; break;
-        case "af": data = af; break;
-        case "sq": data = sq; break;
-        case "is": data = is; break;
-        case "am": data = am; break;
-        case "as": data = as; break;
-        case "eu": data = eu; break;
-        case "bn": data = bn; break;
-        case "br": data = br; break;
-        case "my": data = my; break;
-        case "ce": data = ce; break;
-        case "dz": data = dz; break;
-        case "fo": data = fo; break;
-        case "gl": data = gl; break;
-        case "gu": data = gu; break;
-        case "ha": data = ha; break;
-        case "ga": data = ga; break;
-        case "jv": data = jv; break;
-        case "kn": data = kn; break;
-        case "ks": data = ks; break;
-        case "km": data = km; break;
-        case "lb": data = lb; break;
-        case "lo": data = lo; break;
-        case "mk": data = mk; break;
-        case "ml": data = ml; break;
-        case "mt": data = mt; break;
-        case "mr": data = mr; break;
-        case "mn": data = mn; break;
-        case "ne": data = ne; break;
-        case "nn": data = nn; break;
-        case "no": data = nb; break;
-        case "or": data = or; break;
-        case "pa": data = pa; break;
-        case "fa": data = fa; break;
-        case "sd": data = sd; break;
-        case "gd": data = gd; break;
-        case "si": data = si; break;
-        case "sw": data = sw; break;
-        case "ta": data = ta; break;
-        case "te": data = te; break;
-        case "ti": data = ti; break;
-        case "ug": data = ug; break;
-        case "ur": data = ur; break;
-        case "cy": data = cy; break;
-
-        case "zh": 
-            switch(navigator.language.slice(3, 5)){
-                case "cn": data = zh_cn; break;
-                case "hk": data = zh_hk; break;
-                case "mo": data = zh_mo; break;
-                case "tw": data = zh_tw; break;
-                default: data = zh_cn; break;
-            }
-            break;
-
-        case "sr": navigator.language.slice(3, 5) == "rs" ? data = sr_rs : data = sr_latn; break;
-        case "bs": navigator.language.slice(3, 5) == "ba" ? data = bs_ba : data = bs_cyrl; break;
-
-        default:data = zh_cn; break;        
+        return JSON.parse(data);
     }
+
+    if (lang == 'bs') {
+
+        let regions = {ba: bs_ba, cy: bs_cyrl};
+        let data = regions[navigator.language.slice(3, 5).toLowerCase()] || bs_ba;
+
+        return JSON.parse(data);
+    }
+
+    let data = langs[lang] || en;
+   
     return JSON.parse(data);
 }
 
-const setBackColor = () => {
+const createCards = () => {
 
-    if (typeof(localStorage.colors) == "undefined") {
-        localStorage.colors = JSON.stringify(backColors);
-    } else {
-        backColors = JSON.parse(localStorage.colors);
+    let board = document.querySelector('.board');
+    let cardWrap = document.querySelector('.bigcards-wrap');
+    let templateSmall = document.querySelector('.card-template');
+    let templateBig = document.querySelector('.bigcard-template');
+
+    for (let i = 0; i < numCards; i++) {
+
+        let cardClone = templateSmall.content.cloneNode(true);
+        
+        board.prepend(cardClone);
+
+        if (i % 2 == 0) continue;
+
+        cardClone = templateBig.content.cloneNode(true);
+        
+        cardWrap.prepend(cardClone);
     }
-    
-    document.documentElement.style.setProperty('--back-color', backColors[0]);
 }
 
 const setCards = () => {
 
-    let name;
+    let cards = document.querySelectorAll('.card-wrap');
+    let storageColors = JSON.parse(localStorage.getItem('colors') || '[]');
+    countries = countryData();
+    codes = countryCodes(); 
 
-    countries = getDataFromJSON();
-    codes = localStorageCodes(); 
+    if (storageColors.length == 0) localStorage.colors = JSON.stringify(colors);
 
-    setBackColor();
+    let color = JSON.parse(localStorage.colors)[0];
+    
+    document.documentElement.style.setProperty('--back-color', color);
 
-    document.querySelectorAll('.card img').forEach((image, i) => {
-        if (i < numberOfCards) {
+    for (let i = 0; i < numCards; i++) {
 
-            name  = countries.find(x => x.code === codes[i].toUpperCase()).name;
+        let image = cards[i].querySelector('img');
+        let name  = countries.find(x => x.code === codes[i].toUpperCase()).name;
+        let country = image.nextElementSibling;
+        let text = country.firstElementChild;
 
-            image.src = `./images/flags/${codes[i]}.png`;
-            image.nextElementSibling.querySelector('p').style.fontSize = "";
-            image.nextElementSibling.querySelector('p').innerHTML = name;
+        delete cards[i].dataset.n
+        image.src = `./images/flags/${codes[i]}.png`;
+        text.removeAttribute('style');
+        text.innerHTML = name;
 
-            let fontSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size'));
+        let fontSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size'));
 
-            while (parseFloat(getComputedStyle(image.nextElementSibling).getPropertyValue("height")) < parseFloat(getComputedStyle(image.nextElementSibling.firstElementChild).getPropertyValue("height"))) {
-                fontSize -= 0.1;
-                image.nextElementSibling.firstElementChild.style.fontSize = fontSize + "vmin";
-            }
-            if (fontSize < parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size'))){
-                fontSize -= 0.1;
-                image.nextElementSibling.firstElementChild.style.fontSize = fontSize + "vmin";
-            }
-
-            while (parseFloat(getComputedStyle(image.nextElementSibling).getPropertyValue("width")) < parseFloat(getComputedStyle(image.nextElementSibling.firstElementChild).getPropertyValue("width"))) {
-                fontSize -= 0.1;
-                image.nextElementSibling.firstElementChild.style.fontSize = fontSize + "vmin";
-            }
+        while (parseFloat(getComputedStyle(country).getPropertyValue('height')) < parseFloat(getComputedStyle(text).getPropertyValue('height'))) {
+            fontSize -= 0.1;
+            text.style.fontSize = fontSize + 'vmin';
         }
-    });
+
+        if (fontSize < parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--font-size'))) {
+            fontSize -= 0.1;
+            text.style.fontSize = fontSize + 'vmin';
+        }
+
+        while (parseFloat(getComputedStyle(country).getPropertyValue('width')) < parseFloat(getComputedStyle(text).getPropertyValue('width'))) {
+            fontSize -= 0.1;
+            text.style.fontSize = fontSize + 'vmin';
+        }
+    }
 }
 
-const localStorageCodes = () => {
-
-    let randomizedCodes;
+const countryCodes = () => {
     
-    if (typeof(localStorage.codes) == "undefined") {
-        codes = allCodes;
-     
-        randomizedCodes = codes.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
-
-        localStorage.codes = JSON.stringify(randomizedCodes);
-
-    } 
+    if (localStorage.getItem('codes') == null) localStorage.codes = JSON.stringify(shuffle(alpha2));
  
-    codes = JSON.parse(localStorage.codes).slice(0, numberOfCards/2);
+    codes = JSON.parse(localStorage.codes).slice(0, numCards/2);
 
-    console.log(codes);
+    if (codes.length < numCards / 2) {
 
-    if (codes.length < numberOfCards/2){
-        do{
-            randomizedCodes = allCodes.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
-        } while(randomizedCodes.slice(0, numberOfCards/2 - codes.length).some(r => codes.includes(r)));
+        do {
+            shuffle(alpha2);
+        } while (alpha2.slice(0, numCards / 2 - codes.length).some(r => codes.includes(r)));
 
-        randomizedCodes = codes.concat(randomizedCodes);
-        localStorage.codes = JSON.stringify(randomizedCodes);
-        
-        codes = JSON.parse(localStorage.codes).slice(0, numberOfCards/2);
+        localStorage.codes = JSON.stringify(codes.concat(alpha2));
+        codes = JSON.parse(localStorage.codes).slice(0, numCards / 2);
     }
 
-    codes = shuffleCodes(); 
-
-    return codes;
+    return shuffle(codes.concat(codes)); 
 }
 
-const showUp = () => {
+const showCards = () => {
 
-    let delays = Array.from({length: numberOfCards}, (_, i) => i/7);
+    let delays = Array.from({length: numCards}, (_, i) => i/7);
+    let cards = document.querySelectorAll('.card-wrap');
 
-    delays = delays.map((a) => [Math.random(),a]).sort((a,b) => a[0]-b[0]).map((a) => a[1]);
-    document.querySelectorAll(".flip-container").forEach((card, i) => {
-            card.style.transition = `opacity 0s linear ${delays[i]}s`; 
-    });   
-    document.querySelectorAll(".flip-container").forEach((card) => {
-            card.style.opacity = 1;    
-    });               
+    shuffle(delays);
+
+    for (let i = 0; i < numCards; i++) {
+
+        cards[i].style.transition = `opacity 0s linear ${delays[i]}s`; 
+        cards[i].classList.add('visible');
+    }     
+}
+
+const enableCards = () => {
+
+    let cards = document.querySelectorAll('.card-wrap');
+
+    cards.forEach(card => {
+        card.addEventListener('touchstart', flipCard)
+        card.addEventListener('mousedown', flipCard)    
+    });
+
+    window.addEventListener('resize', setBoardSize);
+} 
+
+const disableCard = (card) => {
+
+    card.removeEventListener('touchstart', flipCard);
+    card.removeEventListener('mousedown', flipCard);
+}
+
+const disableTapZoom = () => {
+
+    const preventDefault = (e) => e.preventDefault();
+
+    document.addEventListener('touchstart', preventDefault, {passive: false});
+    document.addEventListener('mousedown', preventDefault, {passive: false});
+}
+
+const registerServiceWorker = () => {
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
 }
 
 const init = () => {
-
-    setEventListeners();
-
-    setNumberOfCards();
-
-    setTheBoard();
-
+    registerServiceWorker();
+    disableTapZoom();
+    setBoardSize();
+    createCards();
     setCards();
-    
-    showUp();
-
-   
+    showCards();
+    enableCards();
 }
 
-window.onload = () => {
-    document.fonts.ready.then(() => {
-
-        const preventDefault = (e) => e.preventDefault();
-        
-        document.body.addEventListener('touchstart', preventDefault, { passive: false });
-        
-        init(); 
-    });
-}
-
+window.onload = () => document.fonts.ready.then(init);

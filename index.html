@@ -2,9 +2,9 @@
 <html lang="en" translate="no">
 <head>
     <meta charset="UTF-8">
-    <title>Memory Game Online</title>
-    <meta name="description" content="Memory. Matching falgs game">
-    <meta name="keywords" content="memory, puzzle, flags, game, cards, online, board, matching, play">
+    <title>Memory</title>
+    <meta name="description" content="Find all matching pairs of flags by turning over two cards at a time">
+    <meta name="keywords" content="board,card,flag,match,puzzle,game,play,online,challenge,kids,family">
     <meta name="author" content="Alexander Berson">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
@@ -15,17 +15,17 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Memory">
-    <meta name="theme-color" content="#cfcfcf">
     <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicon-16x16.png">
     <link rel="shortcut icon" href="images/icons/favicon.ico">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff0000">  
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#cfcfcf">  
     <meta name="msapplication-TileColor" content="#cfcfcf">
     <link rel="manifest" href="manifest.json">
 
     <link href="css/style.css" rel="stylesheet">
-    <script src="js/data.js"></script>
+    <script src="js/data.js" defer></script>
+    <script src="js/memory.js" defer></script>
 
     <script src="json/en.json"></script>
     <script src="json/ru.json"></script>
@@ -124,544 +124,34 @@
     <script src="json/zh-hk.json"></script>
     <script src="json/zh-tw.json"></script>
     <script src="json/zh-mo.json"></script>
-
-    <script src="js/memory.js"></script>
-
 </head>
 <body class="noselect">
-    <main>
-        <div class="board">
-            <div id="card1" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
+    <div class="board">
+        <template class="card-template">
+            <div class="card-wrap">
+                <div class="card">
                     <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
+                        <img src="" alt="">
+                        <div class="country">
+                            <p></p>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div id="card2" class="flip-container">
-                <div class="flipper">
                     <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
-            <div id="card3" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
+        </template>
+        <div class="bigcards-wrap">
+            <template class="bigcard-template">
+                <div class="bigcard">
+                    <img src="" alt="">
+                    <div class="country">
+                        <p></p>
                     </div>
                 </div>
-            </div>
-
-            <div id="card4" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card5" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card6" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card7" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card8" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card9" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card10" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card11" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card12" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card13" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card14" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card15" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card16" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card17" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card18" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card19" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card20" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card21" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card22" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card23" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card24" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card25" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card26" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card27" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card28" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card29" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card30" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card31" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card32" class="flip-container">
-                <div class="flipper">
-                    <div class="back">
-                        <div class="card">
-                        </div>
-                    </div>
-                    <div class="front">
-                        <div class="card">
-                            <img src="" alt="">
-                            <div class="country">
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="big1" class="card">
-                <img src="" alt="">
-                <div class="country">
-                    <p></p>
-                </div>
-            </div>
-            <div id="big2" class="card">
-                <img src="" alt="">
-                <div class="country">
-                    <p></p>
-                </div>
-            </div>
-            <div id="designed">
-                Designed by Alexander Berson
-            </div>
+            </template>  
         </div>
-    </main>
-    <footer>
-    </footer>
+        <div class="designed">Designed by Alexander Berson</div>
+    </div>
 </body>
 </html>
