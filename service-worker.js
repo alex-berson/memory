@@ -1,6 +1,6 @@
-const cacheName = 'cache-v3';
+const cacheName = 'cache-v4';
 const files = [
-  '/',
+  '/memory/',
   'index.html',
   'css/style.css',
   'js/memory.js',
